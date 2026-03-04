@@ -35,12 +35,19 @@
                 android:layout_marginTop="100dp"
                 android:orientation="vertical">
 
-                <ImageView
-                    android:id="@+id/imageView"
-                    android:layout_width="170dp"
-                    android:layout_height="170dp"
-                    android:background="@drawable/roundedcorners"
-                    app:srcCompat="@drawable/humanialogo" />
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:cardCornerRadius="50dp">
+                    <ImageView
+                        android:id="@+id/imageView"
+                        android:layout_width="170dp"
+                        android:layout_height="170dp"
+                        android:background="@drawable/roundedcorners"
+                        app:srcCompat="@drawable/humanialogo" />
+
+                </androidx.cardview.widget.CardView>
+
 
             </LinearLayout>
 
