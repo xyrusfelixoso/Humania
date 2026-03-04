@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="organic_background">#F5F2E9</color>
+    <color name="organic_primary_green">#2D4033</color>
+    <color name="organic_bronze_accent">#A67C52</color>
+    <color name="organic_text_main">#333333</color>
+
+    <color name="global_background">#FAFAFA</color>
+    <color name="global_primary_navy">#1B365D</color>
+    <color name="global_terracotta">#D97A5B</color>
+    <color name="global_cool_grey">#8E979A</color>
+
+    <color name="premium_background">#212121</color>
+    <color name="premium_gold">#C5A059</color>
+    <color name="premium_espresso">#4B3621</color>
+    <color name="premium_silver">#C0C0C0</color>
+</resources>
