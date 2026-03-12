@@ -1,17 +1,101 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Base.Theme.Humania" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.Humania" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="colorPrimary">@color/green_primary</item>
+        <item name="colorPrimaryVariant">@color/green_dark</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorSecondary">@color/green_medium</item>
+        <item name="android:windowBackground">@color/background</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar">false</item>
     </style>
 
-    <style name="Theme.Humania" parent="Base.Theme.Humania" />
-<<<<<<< HEAD
+    <!-- Base Style to prevent implicit inheritance errors -->
+    <style name="Widget" parent="android:Widget" />
 
-    <style name="splashscreen" parent="Theme.AppCompat.DayNight.NoActionBar">
-        <item name="android:windowBackground">@color/white</item>
-        <item name="android:statusBarColor" tools:targetApi="l" >?android:attr/colorPrimary</item>
+    <!-- Base Humania Styles -->
+    <style name="Widget.Humania" parent="Widget" />
+    <style name="Widget.Humania.Button" parent="Widget.MaterialComponents.Button" />
+
+    <!-- Primary button -->
+    <style name="Widget.Humania.Button.Primary" parent="Widget.Humania.Button">
+        <item name="android:background">@drawable/bg_button_primary</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">@dimen/text_md</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:paddingTop">16dp</item>
+        <item name="android:paddingBottom">16dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
     </style>
-=======
->>>>>>> 329a5679b4cde414db467d46aa983b1f078148d7
+
+    <!-- Secondary button -->
+    <style name="Widget.Humania.Button.Secondary" parent="Widget.Humania.Button">
+        <item name="android:background">@drawable/bg_button_secondary</item>
+        <item name="android:textColor">@color/green_primary</item>
+        <item name="android:textSize">@dimen/text_body</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:paddingTop">14dp</item>
+        <item name="android:paddingBottom">14dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <!-- Tag style -->
+    <style name="Widget.Humania.Tag" parent="Widget">
+        <item name="android:textSize">@dimen/text_xs</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:paddingStart">8dp</item>
+        <item name="android:paddingEnd">8dp</item>
+        <item name="android:paddingTop">3dp</item>
+        <item name="android:paddingBottom">3dp</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="Widget.Humania.Tag.Green" parent="Widget.Humania.Tag">
+        <item name="android:background">@drawable/bg_tag_green</item>
+        <item name="android:textColor">@color/green_primary</item>
+    </style>
+
+    <style name="Widget.Humania.Tag.Orange" parent="Widget.Humania.Tag">
+        <item name="android:background">@drawable/bg_tag_orange</item>
+        <item name="android:textColor">@color/tag_orange_text</item>
+    </style>
+
+    <style name="Widget.Humania.Tag.Blue" parent="Widget.Humania.Tag">
+        <item name="android:background">@drawable/bg_tag_blue</item>
+        <item name="android:textColor">@color/tag_blue_text</item>
+    </style>
+
+    <!-- Section title -->
+    <style name="Widget.Humania.SectionTitle" parent="Widget">
+        <item name="android:textSize">@dimen/text_lg</item>
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:fontFamily">serif</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <!-- Form input -->
+    <style name="Widget.Humania.Input" parent="Widget">
+        <item name="android:background">@drawable/bg_input</item>
+        <item name="android:textSize">@dimen/text_body</item>
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:paddingStart">16dp</item>
+        <item name="android:paddingEnd">16dp</item>
+        <item name="android:paddingTop">14dp</item>
+        <item name="android:paddingBottom">14dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <!-- Splashscreen style referenced in Manifest -->
+    <style name="splashscreen" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="android:windowBackground">@drawable/splashscreen</item>
+        <item name="android:windowFullscreen">true</item>
+    </style>
+
 </resources>

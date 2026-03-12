@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- item_donation_card.xml -->
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="20dp"
+    app:cardElevation="2dp"
+    app:cardBackgroundColor="@color/surface"
+    android:foreground="?attr/selectableItemBackground"
+    android:clickable="true"
+    android:focusable="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <!-- Left: Category Image / Icon Area -->
+        <FrameLayout
+            android:id="@+id/ivDonationImage"
+            android:layout_width="90dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_gradient_card_image"
+            android:minHeight="90dp">
+
+            <TextView
+                android:id="@+id/tvDonationEmoji"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="🥬"
+                android:textSize="36sp" />
+        </FrameLayout>
+
+        <!-- Right: Info -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:padding="14dp">
+
+            <!-- Title -->
+            <TextView
+                android:id="@+id/tvDonationTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Fresh Vegetables Bundle"
+                android:textColor="@color/text_primary"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:maxLines="1"
+                android:ellipsize="end" />
+
+            <!-- Donor + Time -->
+            <TextView
+                android:id="@+id/tvDonationMeta"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="Posted 10 min ago by Ana L."
+                android:textColor="@color/text_muted"
+                android:textSize="12sp"
+                android:layout_marginBottom="8dp" />
+
+            <!-- Tags Row -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <!-- Category Tag -->
+                <TextView
+                    android:id="@+id/tvTagCategory"
+                    style="@style/Widget.Humania.Tag.Green"
+                    android:text="🥦 Food"
+                    android:layout_marginEnd="8dp" />
+
+                <!-- Urgency Tag -->
+                <TextView
+                    android:id="@+id/tvTagUrgency"
+                    style="@style/Widget.Humania.Tag.Orange"
+                    android:text="Expires today" />
+
+                <!-- Distance -->
+                <TextView
+                    android:id="@+id/tvDistance"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="0.4 km"
+                    android:textColor="@color/text_muted"
+                    android:textSize="11sp"
+                    android:gravity="end" />
+
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

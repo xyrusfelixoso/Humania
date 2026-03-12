@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Humania</string>
@@ -26,9 +25,16 @@
     <string name="nav_browse">Browse</string>
     <string name="nav_messages">Messages</string>
     <string name="nav_profile">Profile</string>
+
+    <!-- Home Fragment Strings -->
+    <string name="user_name_default">Maria 👋</string>
+    <string name="stat_donated">DONATED</string>
+    <string name="stat_helped">HELPED</string>
+    <string name="stat_rating">RATING</string>
+    <string name="default_avatar_emoji">😊</string>
+    <string name="chip_all">🌿 All</string>
+    <string name="chip_food">🥦 Food</string>
+    <string name="chip_clothes">👕 Clothes</string>
+    <string name="chip_items">📦 Items</string>
+    <string name="chip_toys">🧸 Toys</string>
 </resources>
-=======
-<resources>
-    <string name="app_name">Humania</string>
-</resources>
->>>>>>> 329a5679b4cde414db467d46aa983b1f078148d7

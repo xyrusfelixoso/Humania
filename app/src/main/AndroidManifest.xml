@@ -11,31 +11,31 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Humania">
+        
         <activity
-            android:name=".MainActivity"
-<<<<<<< HEAD
-            android:exported="true"/>
-        <activity
-            android:name=".activity_onboarding"
-            android:exported="true"/>
-        <activity android:name=".Splashscreen"
+            android:name=".Splashscreen"
             android:exported="true"
-            android:theme="@style/splashscreen">
-
-=======
-            android:exported="true">
->>>>>>> 329a5679b4cde414db467d46aa983b1f078148d7
+            android:theme="@style/Theme.Humania"> <!-- Reverted to default theme if splashscreen style is missing -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".btn"
+            android:exported="false" />
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="false"/>
+        <activity
+            android:name=".activity_getstarted"
+            android:exported="false"/>
+        <activity
+            android:name=".activity_onboarding"
+            android:exported="false"/>
+
     </application>
 
-<<<<<<< HEAD
 </manifest>
- 
-=======
-</manifest>
->>>>>>> 329a5679b4cde414db467d46aa983b1f078148d7
