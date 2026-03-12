@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- activity_onboarding.xml -->
+<androidx.constraintlayout.widget.ConstraintLayout
+
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/onboard"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/background">
+
+    <!-- Top Illustration Area -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:gravity="bottom"
+        android:padding="32dp"
+        android:background="@drawable/bg_tag_green">
+
+        <!-- Illustration Emoji -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="🥦🍞🧸👕"
+            android:textSize="64sp"
+            android:gravity="center"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Main Title -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Share food &amp; items with those who need them"
+            android:textColor="@color/green_dark"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            android:fontFamily="serif"
+            android:lineSpacingMultiplier="1.2" />
+
+        <!-- Subtitle -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Humania connects generous donors with families and shelters nearby — in minutes."
+            android:textColor="@color/text_secondary"
+            android:textSize="14sp"
+            android:lineSpacingMultiplier="1.6" />
+
+    </LinearLayout>
+
+    <!-- Bottom Actions -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="28dp"
+        android:background="@color/background">
+
+        <!-- Donor Button -->
+
+        <Button
+            android:id="@+id/button3"
+            android:layout_width="match_parent"
+            android:layout_height="63dp"
+            android:background="@drawable/rbg"
+            android:backgroundTint="@null"
+            android:text="I WANT TO DONATE"
+            android:layout_marginBottom="10dp"
+            android:textColor="@color/white"/>
+
+        <Button
+            android:id="@+id/button5"
+            android:layout_width="match_parent"
+            android:layout_height="63dp"
+            android:background="@drawable/rbg"
+            android:backgroundTint="@null"
+            android:text="I NEED HELP!"
+            android:layout_marginBottom="10dp"
+            android:textColor="@color/white" />
+
+        <Button
+            android:id="@+id/button4"
+            android:layout_width="match_parent"
+            android:layout_height="63dp"
+            android:background="@drawable/rbg"
+            android:backgroundTint="@null"
+            android:text="IM AN ORGANIZATION"
+            android:textColor="@color/white" />
+    </LinearLayout>
+
+</LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
