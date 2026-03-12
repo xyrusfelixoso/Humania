@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Humania</string>
@@ -26,3 +27,8 @@
     <string name="nav_messages">Messages</string>
     <string name="nav_profile">Profile</string>
 </resources>
+=======
+<resources>
+    <string name="app_name">Humania</string>
+</resources>
+>>>>>>> 329a5679b4cde414db467d46aa983b1f078148d7

@@ -13,6 +13,7 @@
         android:theme="@style/Theme.Humania">
         <activity
             android:name=".MainActivity"
+<<<<<<< HEAD
             android:exported="true"/>
         <activity
             android:name=".activity_onboarding"
@@ -21,6 +22,9 @@
             android:exported="true"
             android:theme="@style/splashscreen">
 
+=======
+            android:exported="true">
+>>>>>>> 329a5679b4cde414db467d46aa983b1f078148d7
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -29,5 +33,9 @@
         </activity>
     </application>
 
+<<<<<<< HEAD
 </manifest>
  
+=======
+</manifest>
+>>>>>>> 329a5679b4cde414db467d46aa983b1f078148d7
