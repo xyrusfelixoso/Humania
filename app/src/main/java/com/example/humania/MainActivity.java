@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -58,6 +60,20 @@ public class MainActivity extends AppCompatActivity {
 
         // Login button click
         btnLogin.setOnClickListener(view -> checkLogin());
+
+
+
+        findViewById(R.id.tvForgotPassword).setOnClickListener(v -> 
+            Toast.makeText(this, "Forgot Password clicked", Toast.LENGTH_SHORT).show());
+
+        findViewById(R.id.tvSignUp).setOnClickListener(v -> 
+            Toast.makeText(this, "Sign Up clicked", Toast.LENGTH_SHORT).show());
+
+        findViewById(R.id.btnGoogle).setOnClickListener(v -> 
+            Toast.makeText(this, "Google Login clicked", Toast.LENGTH_SHORT).show());
+
+        findViewById(R.id.btnFacebook).setOnClickListener(v -> 
+            Toast.makeText(this, "Facebook Login clicked", Toast.LENGTH_SHORT).show());
     }
 
     private void checkLogin() {
