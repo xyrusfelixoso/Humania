@@ -78,13 +78,23 @@
                 android:clickable="true"
                 android:focusable="true">
 
+                <ImageView
+                    android:id="@+id/ivPreview"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:scaleType="centerCrop"
+                    android:visibility="gone"
+                    android:layout_marginBottom="12dp"/>
+
                 <TextView
+                    android:id="@+id/tvCameraEmoji"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="📸"
                     android:textSize="40sp" />
 
                 <TextView
+                    android:id="@+id/tvAddPhotos"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
@@ -94,10 +104,11 @@
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/tvUploadHint"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:text="Tap to upload up to 5 photos"
+                    android:text="Tap to take a photo"
                     android:textColor="@color/text_muted"
                     android:textSize="12sp" />
 
@@ -114,8 +125,6 @@
                 android:letterSpacing="0.05"
                 android:layout_marginBottom="8dp" />
 
-            <!-- Horizontal Flow using a horizontal LinearLayout with wrapping is not possible
-                 Switching to standard horizontal layout with margins for now. -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -281,17 +290,20 @@
             <EditText
                 android:id="@+id/etLocation"
                 style="@style/Widget.Humania.Input"
-                android:hint="📍 Your address or public meet point"
+                android:hint="Select Location in Davao del Sur"
                 android:inputType="textPostalAddress"
+                android:focusable="false"
+                android:clickable="true"
                 android:layout_marginBottom="24dp" />
 
             <!-- Submit Button -->
             <Button
                 android:id="@+id/btnPostDonation"
                 style="@style/Widget.Humania.Button.Primary"
-                android:text="🎁 Post Donation" />
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Post Donation" />
 
         </LinearLayout>
     </ScrollView>
-
 </LinearLayout>

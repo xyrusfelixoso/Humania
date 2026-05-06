@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,8 +26,8 @@ public class MainActivity extends AppCompatActivity {
     private boolean passwordVisible = false;
 
     // Arrays for multiple users
-    private String[] emails = {"pasikat", "admin", "user"};
-    private String[] passwords = {"sijerry", "admin123", "user123"};
+    private String[] emails = {"pasikat", "admin", "user", "org"};
+    private String[] passwords = {"sijerry", "admin123", "user123", "org123"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,11 +60,29 @@ public class MainActivity extends AppCompatActivity {
 
         // Login button click
         btnLogin.setOnClickListener(view -> checkLogin());
+
+        // OTHER BUTTONS FUNCTIONALITY
+        findViewById(R.id.tvForgotPassword).setOnClickListener(v -> 
+            Toast.makeText(this, "Password reset link sent to your email", Toast.LENGTH_SHORT).show());
+
+        findViewById(R.id.btnGoogle).setOnClickListener(v -> 
+            Toast.makeText(this, "Signing in with Google...", Toast.LENGTH_SHORT).show());
+
+        findViewById(R.id.btnFacebook).setOnClickListener(v -> 
+            Toast.makeText(this, "Signing in with Facebook...", Toast.LENGTH_SHORT).show());
+
+        findViewById(R.id.tvSignUp).setOnClickListener(v -> 
+            Toast.makeText(this, "Opening Sign Up screen...", Toast.LENGTH_SHORT).show());
     }
 
     private void checkLogin() {
         String inputEmail = etEmail.getText().toString();
         String inputPassword = etPassword.getText().toString();
+
+        if (inputEmail.isEmpty() || inputPassword.isEmpty()) {
+            Toast.makeText(this, "Please enter email and password", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         boolean valid = false;
 
@@ -77,11 +97,13 @@ public class MainActivity extends AppCompatActivity {
         if (valid) {
             Intent intent = new Intent(MainActivity.this, activity_getstarted.class);
             startActivity(intent);
+            finish(); // Prevent going back to login
         } else {
             etEmail.setText("");
             etPassword.setText("");
             etEmail.setHint("Wrong email!");
             etPassword.setHint("Wrong password!");
+            Toast.makeText(this, "Invalid credentials", Toast.LENGTH_SHORT).show();
         }
     }
 }

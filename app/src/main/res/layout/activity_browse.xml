@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/background">
+
+    <!-- Header -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingTop="54dp"
+        android:paddingBottom="16dp"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:background="@color/surface"
+        android:elevation="2dp">
+
+        <TextView
+            android:id="@+id/btnBrowseBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="←"
+            android:textSize="22sp"
+            android:textColor="@color/green_primary"
+            android:clickable="true"
+            android:focusable="true" />
+
+        <TextView
+            android:id="@+id/tvBrowseTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="Browse Donations"
+            android:textColor="@color/text_primary"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <!-- Search Bar -->
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:background="@drawable/bg_input"
+        android:hint="Search for food, clothes..."
+        android:padding="12dp"
+        android:drawableStart="@drawable/ic_search"
+        android:drawablePadding="8dp"
+        android:textSize="14sp" />
+
+    <!-- List -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <include layout="@layout/item_donation_card" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="12dp" />
+            <include layout="@layout/item_donation_card" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="12dp" />
+            <include layout="@layout/item_donation_card" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="12dp" />
+            <include layout="@layout/item_donation_card" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="12dp" />
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

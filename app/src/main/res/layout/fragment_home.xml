@@ -149,13 +149,16 @@
                     </LinearLayout>
                 </LinearLayout>
 
-                <!-- Avatar -->
+                <!-- Avatar (Clickable to Profile) -->
                 <FrameLayout
+                    android:id="@+id/ivProfileAvatar"
                     android:layout_width="42dp"
                     android:layout_height="42dp"
                     android:layout_gravity="top|end"
                     android:background="@drawable/bg_avatar"
-                    android:layout_marginTop="8dp">
+                    android:layout_marginTop="8dp"
+                    android:clickable="true"
+                    android:focusable="true">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -200,7 +203,9 @@
                             android:paddingEnd="16dp"
                             android:paddingTop="8dp"
                             android:paddingBottom="8dp"
-                            android:layout_marginEnd="8dp"/>
+                            android:layout_marginEnd="8dp"
+                            android:clickable="true"
+                            android:focusable="true" />
 
                         <TextView
                             android:id="@+id/chipFood"
@@ -215,7 +220,9 @@
                             android:paddingEnd="16dp"
                             android:paddingTop="8dp"
                             android:paddingBottom="8dp"
-                            android:layout_marginEnd="8dp"/>
+                            android:layout_marginEnd="8dp"
+                            android:clickable="true"
+                            android:focusable="true" />
 
                         <TextView
                             android:id="@+id/chipClothes"
@@ -230,7 +237,9 @@
                             android:paddingEnd="16dp"
                             android:paddingTop="8dp"
                             android:paddingBottom="8dp"
-                            android:layout_marginEnd="8dp"/>
+                            android:layout_marginEnd="8dp"
+                            android:clickable="true"
+                            android:focusable="true" />
 
                         <TextView
                             android:id="@+id/chipItems"
@@ -245,7 +254,9 @@
                             android:paddingEnd="16dp"
                             android:paddingTop="8dp"
                             android:paddingBottom="8dp"
-                            android:layout_marginEnd="8dp"/>
+                            android:layout_marginEnd="8dp"
+                            android:clickable="true"
+                            android:focusable="true" />
 
                         <TextView
                             android:id="@+id/chipToys"
@@ -259,7 +270,9 @@
                             android:paddingStart="16dp"
                             android:paddingEnd="16dp"
                             android:paddingTop="8dp"
-                            android:paddingBottom="8dp" />
+                            android:paddingBottom="8dp"
+                            android:clickable="true"
+                            android:focusable="true" />
 
                     </LinearLayout>
                 </HorizontalScrollView>
@@ -309,8 +322,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="14dp"/>
-
-                <!-- NOTE: In production, use RecyclerView for dynamic lists -->
 
             </LinearLayout>
         </LinearLayout>
