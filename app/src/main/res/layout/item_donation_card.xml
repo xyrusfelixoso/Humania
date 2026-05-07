@@ -19,11 +19,18 @@
 
         <!-- Left: Category Image / Icon Area -->
         <FrameLayout
-            android:id="@+id/ivDonationImage"
+            android:id="@+id/layoutDonationImage"
             android:layout_width="90dp"
             android:layout_height="match_parent"
             android:background="@drawable/bg_gradient_card_image"
             android:minHeight="90dp">
+
+            <ImageView
+                android:id="@+id/ivDonationImage"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/tvDonationEmoji"
