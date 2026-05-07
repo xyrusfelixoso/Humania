@@ -327,18 +327,6 @@
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
-    <!-- FAB -->
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|center_horizontal"
-        android:layout_marginBottom="84dp"
-        android:backgroundTint="@color/green_primary"
-        android:contentDescription="@string/post_donation"
-        app:srcCompat="@android:drawable/ic_input_add"
-        app:tint="@color/white"
-        app:fabSize="normal"
-        app:elevation="8dp" />
+    <!-- Removed FAB from here as it is now in DashboardActivity -->
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
