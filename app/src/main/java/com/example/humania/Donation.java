@@ -11,8 +11,12 @@ public class Donation implements Serializable {
     private String category;
     private String photoPath;
     private String timestamp;
+    private String userId;
 
-    public Donation(String title, String description, String quantity, String expiryDate, String location, String category, String photoPath, String timestamp) {
+    // No-argument constructor for Firebase
+    public Donation() {}
+
+    public Donation(String title, String description, String quantity, String expiryDate, String location, String category, String photoPath, String timestamp, String userId) {
         this.title = title;
         this.description = description;
         this.quantity = quantity;
@@ -21,6 +25,7 @@ public class Donation implements Serializable {
         this.category = category;
         this.photoPath = photoPath;
         this.timestamp = timestamp;
+        this.userId = userId;
     }
 
     public String getTitle() { return title; }
@@ -31,4 +36,5 @@ public class Donation implements Serializable {
     public String getCategory() { return category; }
     public String getPhotoPath() { return photoPath; }
     public String getTimestamp() { return timestamp; }
+    public String getUserId() { return userId; }
 }

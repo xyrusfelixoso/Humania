@@ -17,6 +17,10 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 public class MainActivity extends AppCompatActivity {
 
     private Button btnLogin;
@@ -25,15 +29,20 @@ public class MainActivity extends AppCompatActivity {
     private ImageView ivTogglePassword;
     private boolean passwordVisible = false;
 
-    // Arrays for multiple users
-    private String[] emails = {"pasikat", "admin", "user", "org"};
-    private String[] passwords = {"sijerry", "admin123", "user123", "org123"};
+    private FirebaseAuth mAuth;
+    private FirebaseDatabase database;
+    private DatabaseReference mDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_login);
+
+        mAuth = FirebaseAuth.getInstance();
+        // Initialize Firebase Realtime Database with the specific regional URL
+        database = FirebaseDatabase.getInstance("https://humania-942a7-default-rtdb.asia-southeast1.firebasedatabase.app/");
+        mDatabase = database.getReference();
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.login), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -63,47 +72,42 @@ public class MainActivity extends AppCompatActivity {
 
         // OTHER BUTTONS FUNCTIONALITY
         findViewById(R.id.tvForgotPassword).setOnClickListener(v -> 
-            Toast.makeText(this, "Password reset link sent to your email", Toast.LENGTH_SHORT).show());
+            Toast.makeText(this, "Password reset functionality not implemented yet", Toast.LENGTH_SHORT).show());
 
         findViewById(R.id.btnGoogle).setOnClickListener(v -> 
-            Toast.makeText(this, "Signing in with Google...", Toast.LENGTH_SHORT).show());
+            Toast.makeText(this, "Google Sign-In not implemented yet", Toast.LENGTH_SHORT).show());
 
         findViewById(R.id.btnFacebook).setOnClickListener(v -> 
-            Toast.makeText(this, "Signing in with Facebook...", Toast.LENGTH_SHORT).show());
+            Toast.makeText(this, "Facebook Sign-In not implemented yet", Toast.LENGTH_SHORT).show());
 
-        findViewById(R.id.tvSignUp).setOnClickListener(v -> 
-            Toast.makeText(this, "Opening Sign Up screen...", Toast.LENGTH_SHORT).show());
+        findViewById(R.id.tvSignUp).setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, SignUpActivity.class);
+            startActivity(intent);
+        });
     }
 
     private void checkLogin() {
-        String inputEmail = etEmail.getText().toString();
-        String inputPassword = etPassword.getText().toString();
+        String inputEmail = etEmail.getText().toString().trim();
+        String inputPassword = etPassword.getText().toString().trim();
 
         if (inputEmail.isEmpty() || inputPassword.isEmpty()) {
             Toast.makeText(this, "Please enter email and password", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        boolean valid = false;
-
-        // Loop through all stored accounts
-        for (int i = 0; i < emails.length; i++) {
-            if (inputEmail.equals(emails[i]) && inputPassword.equals(passwords[i])) {
-                valid = true;
-                break;
-            }
-        }
-
-        if (valid) {
-            Intent intent = new Intent(MainActivity.this, activity_getstarted.class);
-            startActivity(intent);
-            finish(); // Prevent going back to login
-        } else {
-            etEmail.setText("");
-            etPassword.setText("");
-            etEmail.setHint("Wrong email!");
-            etPassword.setHint("Wrong password!");
-            Toast.makeText(this, "Invalid credentials", Toast.LENGTH_SHORT).show();
-        }
+        mAuth.signInWithEmailAndPassword(inputEmail, inputPassword)
+                .addOnCompleteListener(this, task -> {
+                    if (task.isSuccessful()) {
+                        // Sign in success
+                        Intent intent = new Intent(MainActivity.this, activity_getstarted.class);
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        // If sign in fails, display a message to the user.
+                        Toast.makeText(MainActivity.this, "Authentication failed: " + 
+                                (task.getException() != null ? task.getException().getMessage() : "Check credentials"),
+                                Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 }

@@ -24,6 +24,10 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -38,12 +42,15 @@ public class DonateActivity extends AppCompatActivity {
     
     private LinearLayout uploadZone;
     private ImageView ivPreview;
-    private String currentPhotoPath;
+    private String currentPhotoPath = "";
     
     private TextView catFood, catClothes, catItems, catToys;
     private EditText etTitle, etDescription, etQuantity, etExpiry, etLocation;
     private Button btnPostDonation;
     private String selectedCategory = "Food"; // Default
+
+    private FirebaseAuth mAuth;
+    private DatabaseReference mDatabase;
 
     private final String[] davaoDelSurPlaces = {
             "Digos City", "Bansalan", "Hagonoy", "Kiblawan", 
@@ -55,6 +62,11 @@ public class DonateActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_donate);
+
+        mAuth = FirebaseAuth.getInstance();
+        // Initialize Firebase Realtime Database with the specific regional URL
+        mDatabase = FirebaseDatabase.getInstance("https://humania-942a7-default-rtdb.asia-southeast1.firebasedatabase.app/")
+                .getReference();
 
         initViews();
         setupListeners();
@@ -108,22 +120,20 @@ public class DonateActivity extends AppCompatActivity {
     private void selectCategory(String category, TextView selectedView) {
         selectedCategory = category;
         
-        // Reset all categories to default style
+        // Reset all categories
+        int textSecondary = getResources().getColor(android.R.color.darker_gray);
         catFood.setBackgroundResource(R.drawable.bg_chip);
-        catFood.setTextColor(getResources().getColor(R.color.text_secondary));
-        
+        catFood.setTextColor(textSecondary);
         catClothes.setBackgroundResource(R.drawable.bg_chip);
-        catClothes.setTextColor(getResources().getColor(R.color.text_secondary));
-        
+        catClothes.setTextColor(textSecondary);
         catItems.setBackgroundResource(R.drawable.bg_chip);
-        catItems.setTextColor(getResources().getColor(R.color.text_secondary));
-        
+        catItems.setTextColor(textSecondary);
         catToys.setBackgroundResource(R.drawable.bg_chip);
-        catToys.setTextColor(getResources().getColor(R.color.text_secondary));
+        catToys.setTextColor(textSecondary);
 
-        // Apply active style to selected
+        // Apply active style
         selectedView.setBackgroundResource(R.drawable.bg_chip_active);
-        selectedView.setTextColor(getResources().getColor(R.color.white));
+        selectedView.setTextColor(getResources().getColor(android.R.color.white));
     }
 
     private void showDatePicker() {
@@ -161,23 +171,38 @@ public class DonateActivity extends AppCompatActivity {
             return;
         }
 
-        // Create donation object
-        String timestamp = new SimpleDateFormat("MMM dd, yyyy HH:mm", Locale.getDefault()).format(new Date());
-        Donation newDonation = new Donation(title, desc, qty, expiry, loc, selectedCategory, currentPhotoPath, timestamp);
-        
-        // Save donation
-        DonationManager.addDonation(newDonation);
+        if (mAuth.getCurrentUser() == null) {
+            Toast.makeText(this, "You must be logged in to post", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
-        String message = "Success! Your donation of '" + title + "' has been posted.";
+        String userId = mAuth.getCurrentUser().getUid();
+        String timestamp = new SimpleDateFormat("MMM dd, yyyy HH:mm", Locale.getDefault()).format(new Date());
         
-        new AlertDialog.Builder(this)
-                .setTitle("Donation Posted")
-                .setMessage(message)
-                .setPositiveButton("OK", (dialog, which) -> {
-                    setResult(RESULT_OK);
-                    finish();
-                })
-                .show();
+        // Create donation object
+        Donation newDonation = new Donation(title, desc, qty, expiry, loc, selectedCategory, currentPhotoPath, timestamp, userId);
+        
+        // Save to Firebase Realtime Database
+        String donationId = mDatabase.child("donations").push().getKey();
+        if (donationId != null) {
+            mDatabase.child("donations").child(donationId).setValue(newDonation)
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            new AlertDialog.Builder(DonateActivity.this)
+                                    .setTitle("Donation Posted")
+                                    .setMessage("Success! Your donation has been saved to the database.")
+                                    .setPositiveButton("OK", (dialog, which) -> {
+                                        setResult(RESULT_OK);
+                                        finish();
+                                    })
+                                    .show();
+                        } else {
+                            Toast.makeText(DonateActivity.this, "Failed to post: " + 
+                                    (task.getException() != null ? task.getException().getMessage() : "Error"), 
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    });
+        }
     }
 
     private boolean checkCameraPermission() {
