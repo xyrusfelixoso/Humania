@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -38,6 +39,10 @@
         </activity>
 
         <activity
+            android:name=".btn"
+            android:exported="false" />
+
+        <activity
             android:name=".MainActivity"
             android:exported="false"/>
         <activity
@@ -49,6 +54,7 @@
         <activity
             android:name=".activity_onboarding"
             android:exported="false"/>
+
         <activity
             android:name=".DonateActivity"
             android:exported="false"/>
@@ -86,6 +92,7 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
+
 
     </application>
 

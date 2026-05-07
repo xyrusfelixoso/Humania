@@ -8,8 +8,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,6 +22,13 @@ public class MainActivity extends AppCompatActivity {
     private EditText etPassword;
     private ImageView ivTogglePassword;
     private boolean passwordVisible = false;
+
+
+    // Arrays for multiple users
+    private String[] emails = {"pasikat", "admin", "user"};
+    private String[] passwords = {"sijerry", "admin123", "user123"};
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
         // Login button click
         btnLogin.setOnClickListener(view -> checkLogin());
 
+
         // OTHER BUTTONS FUNCTIONALITY
         findViewById(R.id.tvForgotPassword).setOnClickListener(v -> 
             Toast.makeText(this, "Password reset link sent to your email", Toast.LENGTH_SHORT).show());
@@ -72,11 +78,25 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(MainActivity.this, SignUpActivity.class);
             startActivity(intent);
         });
+
     }
 
     private void checkLogin() {
         String inputEmail = etEmail.getText().toString().trim();
         String inputPassword = etPassword.getText().toString().trim();
+
+
+        boolean valid = false;
+
+        // Loop through all stored accounts
+        for (int i = 0; i < emails.length; i++) {
+            if (inputEmail.equals(emails[i]) && inputPassword.equals(passwords[i])) {
+                valid = true;
+                break;
+            }
+        }
+
+        if (valid) {
 
         if (inputEmail.isEmpty() || inputPassword.isEmpty()) {
             Toast.makeText(this, "Please enter email and password", Toast.LENGTH_SHORT).show();
@@ -85,15 +105,14 @@ public class MainActivity extends AppCompatActivity {
 
         // Use UserManager to validate login
         if (UserManager.validateUser(inputEmail, inputPassword)) {
+
             Intent intent = new Intent(MainActivity.this, activity_getstarted.class);
             startActivity(intent);
-            finish(); // Prevent going back to login
         } else {
             etEmail.setText("");
             etPassword.setText("");
             etEmail.setHint("Wrong email!");
             etPassword.setHint("Wrong password!");
-            Toast.makeText(this, "Invalid credentials", Toast.LENGTH_SHORT).show();
         }
     }
 }

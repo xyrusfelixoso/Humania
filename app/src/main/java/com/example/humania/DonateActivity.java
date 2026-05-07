@@ -1,37 +1,11 @@
 package com.example.humania;
 
-import android.Manifest;
-import android.app.AlertDialog;
-import android.app.DatePickerDialog;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.MediaStore;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.core.content.FileProvider;
-
-import java.io.File;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
 
 public class DonateActivity extends AppCompatActivity {
+
 
     private static final int CAMERA_PERMISSION_CODE = 101;
     private static final int CAMERA_REQUEST_CODE = 102;
@@ -47,10 +21,12 @@ public class DonateActivity extends AppCompatActivity {
     private String selectedCategory = "Food"; // Default
     private double selectedLat = 0, selectedLng = 0;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_donate);
+
 
         initViews();
         setupListeners();
@@ -237,5 +213,6 @@ public class DonateActivity extends AppCompatActivity {
             selectedLng = data.getDoubleExtra("longitude", 0);
             etLocation.setText(address);
         }
+
     }
 }
