@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class HomeActivity extends AppCompatActivity {
@@ -20,7 +21,80 @@ public class HomeActivity extends AppCompatActivity {
         if (ivProfileAvatar != null) {
             ivProfileAvatar.setOnClickListener(v -> {
                 Intent intent = new Intent(HomeActivity.this, ProfileActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 startActivity(intent);
+            });
+        }
+
+        // See All -> Browse all
+        TextView tvSeeAll = findViewById(R.id.tvSeeAll);
+        if (tvSeeAll != null) {
+            tvSeeAll.setOnClickListener(v -> {
+                Intent intent = new Intent(HomeActivity.this, BrowseActivity.class);
+                intent.putExtra("category", "All Donations");
+                intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                startActivity(intent);
+            });
+        }
+
+        // Bottom Navigation Setup
+        setupBottomNavigation();
+
+        // Category Chips Setup
+        setupChips();
+        
+        // Donation Cards Setup
+        setupCards();
+        
+        // Update stats
+        updateStats();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateStats();
+        
+        // Sync bottom nav selection
+        BottomNavigationView bottomNav = findViewById(R.id.bottomNavigationView);
+        if (bottomNav != null) {
+            bottomNav.setSelectedItemId(R.id.nav_home);
+        }
+    }
+
+    private void updateStats() {
+        int count = DonationManager.getDonationCount();
+        TextView tvStatDonated = findViewById(R.id.tvHomeStatDonated);
+        if (tvStatDonated != null) {
+            tvStatDonated.setText(String.valueOf(count));
+        }
+    }
+
+    private void setupBottomNavigation() {
+        BottomNavigationView bottomNav = findViewById(R.id.bottomNavigationView);
+        if (bottomNav != null) {
+            bottomNav.setSelectedItemId(R.id.nav_home);
+            bottomNav.setOnItemSelectedListener(item -> {
+                int id = item.getItemId();
+                Intent intent = null;
+                if (id == R.id.nav_home) {
+                    return true;
+                } else if (id == R.id.nav_browse) {
+                    intent = new Intent(this, BrowseActivity.class);
+                    intent.putExtra("category", "All");
+                } else if (id == R.id.nav_messages) {
+                    intent = new Intent(this, MessageListActivity.class);
+                } else if (id == R.id.nav_profile) {
+                    intent = new Intent(this, ProfileActivity.class);
+                }
+                
+                if (intent != null) {
+                    intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                    startActivity(intent);
+                    overridePendingTransition(0, 0);
+                    return true;
+                }
+                return false;
             });
         }
 
@@ -32,22 +106,6 @@ public class HomeActivity extends AppCompatActivity {
                 startActivity(intent);
             });
         }
-
-        // See All -> Browse all
-        TextView tvSeeAll = findViewById(R.id.tvSeeAll);
-        if (tvSeeAll != null) {
-            tvSeeAll.setOnClickListener(v -> {
-                Intent intent = new Intent(HomeActivity.this, BrowseActivity.class);
-                intent.putExtra("category", "All Donations");
-                startActivity(intent);
-            });
-        }
-
-        // Category Chips Setup
-        setupChips();
-        
-        // Donation Cards Setup
-        setupCards();
     }
 
     private void setupChips() {
@@ -61,6 +119,7 @@ public class HomeActivity extends AppCompatActivity {
     private void openBrowse(String category) {
         Intent intent = new Intent(HomeActivity.this, BrowseActivity.class);
         intent.putExtra("category", category);
+        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         startActivity(intent);
     }
 

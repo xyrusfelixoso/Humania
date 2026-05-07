@@ -8,6 +8,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 public class ChatActivity extends AppCompatActivity {
 
@@ -15,6 +16,7 @@ public class ChatActivity extends AppCompatActivity {
     private EditText etChatMessage;
     private ImageButton btnSendMessage;
     private TextView tvChatName;
+    private boolean isAdminMode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,9 +28,12 @@ public class ChatActivity extends AppCompatActivity {
         btnSendMessage = findViewById(R.id.btnSendMessage);
         tvChatName = findViewById(R.id.tvChatName);
 
+        // Check if current user is admin
+        isAdminMode = UserManager.isAdmin();
+
         String donorName = getIntent().getStringExtra("donorName");
         if (donorName != null) {
-            tvChatName.setText(donorName);
+            tvChatName.setText(isAdminMode ? "User: " + donorName : donorName);
         }
 
         findViewById(R.id.btnChatBack).setOnClickListener(v -> finish());
@@ -36,21 +41,43 @@ public class ChatActivity extends AppCompatActivity {
         btnSendMessage.setOnClickListener(v -> {
             String message = etChatMessage.getText().toString().trim();
             if (!message.isEmpty()) {
-                addMessage(message, true);
-                etChatMessage.setText("");
-                
-                // Mock auto-reply
-                btnSendMessage.postDelayed(() -> addMessage("Got it! I'll check my schedule.", false), 1000);
+                sendMessage(message);
             }
         });
+        
+        // Initial Admin Greeting if not admin
+        if (!isAdminMode) {
+            llMessagesContainer.postDelayed(() -> 
+                addMessage("Hello! I am the Humania Admin. How can I help you today?", false), 500);
+        }
+    }
+
+    private void sendMessage(String message) {
+        // Add the user's/admin's message to the right
+        addMessage(message, true);
+        etChatMessage.setText("");
+
+        // If a regular user sends a message, simulate an Admin reply in English
+        if (!isAdminMode) {
+            btnSendMessage.postDelayed(() -> {
+                String adminReply = "Thank you for your message. We will process your request shortly.";
+                addMessage(adminReply, false);
+            }, 1500);
+        } else {
+            // If Admin is sending, maybe show a "Sent to User" toast
+            Toast.makeText(this, "Reply sent to user", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void addMessage(String text, boolean isOutgoing) {
         TextView textView = new TextView(this);
         textView.setText(text);
         textView.setPadding(32, 24, 32, 24);
-        textView.setTextColor(isOutgoing ? getResources().getColor(R.color.white) : getResources().getColor(R.color.text_primary));
         
+        // Fix: Use ContextCompat to get colors and fix the incorrect R.id.white reference
+        int colorRes = isOutgoing ? R.color.white : android.R.color.black;
+        textView.setTextColor(ContextCompat.getColor(this, colorRes));
+
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
@@ -63,7 +90,6 @@ public class ChatActivity extends AppCompatActivity {
         
         llMessagesContainer.addView(textView);
         
-        // Scroll to bottom (simple way)
         llMessagesContainer.post(() -> {
             View parent = (View) llMessagesContainer.getParent();
             if (parent instanceof android.widget.ScrollView) {

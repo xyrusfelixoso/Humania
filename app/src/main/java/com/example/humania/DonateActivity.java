@@ -35,6 +35,7 @@ public class DonateActivity extends AppCompatActivity {
 
     private static final int CAMERA_PERMISSION_CODE = 101;
     private static final int CAMERA_REQUEST_CODE = 102;
+    private static final int MAP_PICKER_REQUEST_CODE = 103;
     
     private LinearLayout uploadZone;
     private ImageView ivPreview;
@@ -44,12 +45,7 @@ public class DonateActivity extends AppCompatActivity {
     private EditText etTitle, etDescription, etQuantity, etExpiry, etLocation;
     private Button btnPostDonation;
     private String selectedCategory = "Food"; // Default
-
-    private final String[] davaoDelSurPlaces = {
-            "Digos City", "Bansalan", "Hagonoy", "Kiblawan", 
-            "Magsaysay", "Malalag", "Matanao", "Padada", 
-            "Santa Cruz", "Sulop"
-    };
+    private double selectedLat = 0, selectedLng = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,8 +94,11 @@ public class DonateActivity extends AppCompatActivity {
         // Expiry Date Picker
         etExpiry.setOnClickListener(v -> showDatePicker());
 
-        // Location Picker (Davao del Sur)
-        etLocation.setOnClickListener(v -> showLocationPicker());
+        // Map Location Picker
+        etLocation.setOnClickListener(v -> {
+            Intent intent = new Intent(DonateActivity.this, MapPickerActivity.class);
+            startActivityForResult(intent, MAP_PICKER_REQUEST_CODE);
+        });
 
         // Post Donation
         btnPostDonation.setOnClickListener(v -> handlePostDonation());
@@ -140,15 +139,6 @@ public class DonateActivity extends AppCompatActivity {
         datePickerDialog.show();
     }
 
-    private void showLocationPicker() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Select Location in Davao del Sur");
-        builder.setItems(davaoDelSurPlaces, (dialog, which) -> {
-            etLocation.setText(davaoDelSurPlaces[which]);
-        });
-        builder.show();
-    }
-
     private void handlePostDonation() {
         String title = etTitle.getText().toString().trim();
         String desc = etDescription.getText().toString().trim();
@@ -163,7 +153,7 @@ public class DonateActivity extends AppCompatActivity {
 
         // Create donation object
         String timestamp = new SimpleDateFormat("MMM dd, yyyy HH:mm", Locale.getDefault()).format(new Date());
-        Donation newDonation = new Donation(title, desc, qty, expiry, loc, selectedCategory, currentPhotoPath, timestamp);
+        Donation newDonation = new Donation(title, desc, qty, expiry, loc, selectedLat, selectedLng, selectedCategory, currentPhotoPath, timestamp);
         
         // Save donation
         DonationManager.addDonation(newDonation);
@@ -241,6 +231,11 @@ public class DonateActivity extends AppCompatActivity {
                 findViewById(R.id.tvUploadHint).setVisibility(View.GONE);
             }
             Toast.makeText(this, "Photo added!", Toast.LENGTH_SHORT).show();
+        } else if (requestCode == MAP_PICKER_REQUEST_CODE && resultCode == RESULT_OK && data != null) {
+            String address = data.getStringExtra("address");
+            selectedLat = data.getDoubleExtra("latitude", 0);
+            selectedLng = data.getDoubleExtra("longitude", 0);
+            etLocation.setText(address);
         }
     }
 }

@@ -3,6 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <uses-feature android:name="android.hardware.camera" android:required="false" />
 
     <application
@@ -14,7 +18,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Humania">
-        
+
+        <!--
+             Google Maps API Key.
+             Get one at https://console.cloud.google.com/google/maps-apis/credentials
+        -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyDFLF588c4VP5vRxPXIaCDd2KSyXOgjQKA" />
+
         <activity
             android:name=".Splashscreen"
             android:exported="true"
@@ -27,6 +39,9 @@
 
         <activity
             android:name=".MainActivity"
+            android:exported="false"/>
+        <activity
+            android:name=".SignUpActivity"
             android:exported="false"/>
         <activity
             android:name=".activity_getstarted"
@@ -57,6 +72,9 @@
             android:exported="false"/>
         <activity
             android:name=".MyDonationsActivity"
+            android:exported="false"/>
+        <activity
+            android:name=".MapPickerActivity"
             android:exported="false"/>
 
         <provider

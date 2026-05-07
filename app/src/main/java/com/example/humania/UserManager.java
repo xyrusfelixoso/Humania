@@ -5,6 +5,7 @@ import java.util.Map;
 
 public class UserManager {
     private static Map<String, String> users = new HashMap<>();
+    private static String currentUserEmail = null;
 
     static {
         // Default users
@@ -15,7 +16,19 @@ public class UserManager {
     }
 
     public static boolean validateUser(String email, String password) {
-        return users.containsKey(email) && users.get(email).equals(password);
+        if (users.containsKey(email) && users.get(email).equals(password)) {
+            currentUserEmail = email;
+            return true;
+        }
+        return false;
+    }
+
+    public static boolean isAdmin() {
+        return "admin".equalsIgnoreCase(currentUserEmail);
+    }
+
+    public static String getCurrentUser() {
+        return currentUserEmail;
     }
 
     public static boolean registerUser(String email, String password) {
@@ -24,5 +37,9 @@ public class UserManager {
         }
         users.put(email, password);
         return true;
+    }
+
+    public static void logout() {
+        currentUserEmail = null;
     }
 }

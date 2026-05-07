@@ -25,10 +25,6 @@ public class MainActivity extends AppCompatActivity {
     private ImageView ivTogglePassword;
     private boolean passwordVisible = false;
 
-    // Arrays for multiple users
-    private String[] emails = {"pasikat", "admin", "user", "org"};
-    private String[] passwords = {"sijerry", "admin123", "user123", "org123"};
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,30 +67,24 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.btnFacebook).setOnClickListener(v -> 
             Toast.makeText(this, "Signing in with Facebook...", Toast.LENGTH_SHORT).show());
 
-        findViewById(R.id.tvSignUp).setOnClickListener(v -> 
-            Toast.makeText(this, "Opening Sign Up screen...", Toast.LENGTH_SHORT).show());
+        // Open Sign Up Screen
+        findViewById(R.id.tvSignUp).setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, SignUpActivity.class);
+            startActivity(intent);
+        });
     }
 
     private void checkLogin() {
-        String inputEmail = etEmail.getText().toString();
-        String inputPassword = etPassword.getText().toString();
+        String inputEmail = etEmail.getText().toString().trim();
+        String inputPassword = etPassword.getText().toString().trim();
 
         if (inputEmail.isEmpty() || inputPassword.isEmpty()) {
             Toast.makeText(this, "Please enter email and password", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        boolean valid = false;
-
-        // Loop through all stored accounts
-        for (int i = 0; i < emails.length; i++) {
-            if (inputEmail.equals(emails[i]) && inputPassword.equals(passwords[i])) {
-                valid = true;
-                break;
-            }
-        }
-
-        if (valid) {
+        // Use UserManager to validate login
+        if (UserManager.validateUser(inputEmail, inputPassword)) {
             Intent intent = new Intent(MainActivity.this, activity_getstarted.class);
             startActivity(intent);
             finish(); // Prevent going back to login

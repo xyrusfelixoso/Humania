@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class ProfileActivity extends AppCompatActivity {
 
@@ -22,12 +23,49 @@ public class ProfileActivity extends AppCompatActivity {
         
         // Update stats
         updateStats();
+
+        // Bottom Navigation Setup
+        setupBottomNavigation();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         updateStats();
+        
+        // Ensure the correct item is selected in bottom nav
+        BottomNavigationView bottomNav = findViewById(R.id.bottomNavigationView);
+        if (bottomNav != null) {
+            bottomNav.setSelectedItemId(R.id.nav_profile);
+        }
+    }
+
+    private void setupBottomNavigation() {
+        BottomNavigationView bottomNav = findViewById(R.id.bottomNavigationView);
+        if (bottomNav != null) {
+            bottomNav.setSelectedItemId(R.id.nav_profile);
+            bottomNav.setOnItemSelectedListener(item -> {
+                int id = item.getItemId();
+                if (id == R.id.nav_home) {
+                    startActivity(new Intent(this, HomeActivity.class));
+                    finish();
+                    return true;
+                } else if (id == R.id.nav_browse) {
+                    Intent intent = new Intent(this, BrowseActivity.class);
+                    intent.putExtra("category", "All");
+                    startActivity(intent);
+                    finish();
+                    return true;
+                } else if (id == R.id.nav_messages) {
+                    startActivity(new Intent(this, MessageListActivity.class));
+                    finish();
+                    return true;
+                } else if (id == R.id.nav_profile) {
+                    return true;
+                }
+                return false;
+            });
+        }
     }
 
     private void updateStats() {
@@ -60,7 +98,10 @@ public class ProfileActivity extends AppCompatActivity {
             findViewById(R.id.menuRequests).setOnClickListener(v -> Toast.makeText(this, "Opening My Requests", Toast.LENGTH_SHORT).show());
         }
         if (findViewById(R.id.menuMessages) != null) {
-            findViewById(R.id.menuMessages).setOnClickListener(v -> Toast.makeText(this, "Opening Messages", Toast.LENGTH_SHORT).show());
+            findViewById(R.id.menuMessages).setOnClickListener(v -> {
+                startActivity(new Intent(this, MessageListActivity.class));
+                finish();
+            });
         }
         if (findViewById(R.id.menuReviews) != null) {
             findViewById(R.id.menuReviews).setOnClickListener(v -> Toast.makeText(this, "Opening Reviews", Toast.LENGTH_SHORT).show());
