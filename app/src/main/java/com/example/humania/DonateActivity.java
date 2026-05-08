@@ -1,11 +1,37 @@
 package com.example.humania;
 
+import android.Manifest;
+import android.app.DatePickerDialog;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
+
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 public class DonateActivity extends AppCompatActivity {
-
 
     private static final int CAMERA_PERMISSION_CODE = 101;
     private static final int CAMERA_REQUEST_CODE = 102;
@@ -21,12 +47,10 @@ public class DonateActivity extends AppCompatActivity {
     private String selectedCategory = "Food"; // Default
     private double selectedLat = 0, selectedLng = 0;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_donate);
-
 
         initViews();
         setupListeners();
@@ -51,54 +75,72 @@ public class DonateActivity extends AppCompatActivity {
     }
 
     private void setupListeners() {
-        findViewById(R.id.btnBack).setOnClickListener(v -> finish());
+        View btnBack = findViewById(R.id.btnBack);
+        if (btnBack != null) {
+            btnBack.setOnClickListener(v -> finish());
+        }
 
-        uploadZone.setOnClickListener(v -> {
-            if (checkCameraPermission()) {
-                openCamera();
-            } else {
-                requestCameraPermission();
-            }
-        });
+        if (uploadZone != null) {
+            uploadZone.setOnClickListener(v -> {
+                if (checkCameraPermission()) {
+                    openCamera();
+                } else {
+                    requestCameraPermission();
+                }
+            });
+        }
 
         // Category Listeners
-        catFood.setOnClickListener(v -> selectCategory("Food", catFood));
-        catClothes.setOnClickListener(v -> selectCategory("Clothes", catClothes));
-        catItems.setOnClickListener(v -> selectCategory("Items", catItems));
-        catToys.setOnClickListener(v -> selectCategory("Toys", catToys));
+        if (catFood != null) catFood.setOnClickListener(v -> selectCategory("Food", catFood));
+        if (catClothes != null) catClothes.setOnClickListener(v -> selectCategory("Clothes", catClothes));
+        if (catItems != null) catItems.setOnClickListener(v -> selectCategory("Items", catItems));
+        if (catToys != null) catToys.setOnClickListener(v -> selectCategory("Toys", catToys));
 
         // Expiry Date Picker
-        etExpiry.setOnClickListener(v -> showDatePicker());
+        if (etExpiry != null) {
+            etExpiry.setOnClickListener(v -> showDatePicker());
+        }
 
         // Map Location Picker
-        etLocation.setOnClickListener(v -> {
-            Intent intent = new Intent(DonateActivity.this, MapPickerActivity.class);
-            startActivityForResult(intent, MAP_PICKER_REQUEST_CODE);
-        });
+        if (etLocation != null) {
+            etLocation.setOnClickListener(v -> {
+                Intent intent = new Intent(DonateActivity.this, MapPickerActivity.class);
+                startActivityForResult(intent, MAP_PICKER_REQUEST_CODE);
+            });
+        }
 
         // Post Donation
-        btnPostDonation.setOnClickListener(v -> handlePostDonation());
+        if (btnPostDonation != null) {
+            btnPostDonation.setOnClickListener(v -> handlePostDonation());
+        }
     }
 
     private void selectCategory(String category, TextView selectedView) {
         selectedCategory = category;
         
         // Reset all categories to default style
-        catFood.setBackgroundResource(R.drawable.bg_chip);
-        catFood.setTextColor(getResources().getColor(R.color.text_secondary));
-        
-        catClothes.setBackgroundResource(R.drawable.bg_chip);
-        catClothes.setTextColor(getResources().getColor(R.color.text_secondary));
-        
-        catItems.setBackgroundResource(R.drawable.bg_chip);
-        catItems.setTextColor(getResources().getColor(R.color.text_secondary));
-        
-        catToys.setBackgroundResource(R.drawable.bg_chip);
-        catToys.setTextColor(getResources().getColor(R.color.text_secondary));
+        if (catFood != null) {
+            catFood.setBackgroundResource(R.drawable.bg_chip);
+            catFood.setTextColor(getResources().getColor(R.color.text_secondary));
+        }
+        if (catClothes != null) {
+            catClothes.setBackgroundResource(R.drawable.bg_chip);
+            catClothes.setTextColor(getResources().getColor(R.color.text_secondary));
+        }
+        if (catItems != null) {
+            catItems.setBackgroundResource(R.drawable.bg_chip);
+            catItems.setTextColor(getResources().getColor(R.color.text_secondary));
+        }
+        if (catToys != null) {
+            catToys.setBackgroundResource(R.drawable.bg_chip);
+            catToys.setTextColor(getResources().getColor(R.color.text_secondary));
+        }
 
         // Apply active style to selected
-        selectedView.setBackgroundResource(R.drawable.bg_chip_active);
-        selectedView.setTextColor(getResources().getColor(R.color.white));
+        if (selectedView != null) {
+            selectedView.setBackgroundResource(R.drawable.bg_chip_active);
+            selectedView.setTextColor(getResources().getColor(R.color.white));
+        }
     }
 
     private void showDatePicker() {
@@ -129,7 +171,10 @@ public class DonateActivity extends AppCompatActivity {
 
         // Create donation object
         String timestamp = new SimpleDateFormat("MMM dd, yyyy HH:mm", Locale.getDefault()).format(new Date());
-        Donation newDonation = new Donation(title, desc, qty, expiry, loc, selectedLat, selectedLng, selectedCategory, currentPhotoPath, timestamp);
+        String userId = UserManager.getCurrentUser();
+        
+        // Donation constructor has 11 parameters
+        Donation newDonation = new Donation(title, desc, qty, expiry, loc, selectedLat, selectedLng, selectedCategory, currentPhotoPath, timestamp, userId);
         
         // Save donation
         DonationManager.addDonation(newDonation);
@@ -175,7 +220,7 @@ public class DonateActivity extends AppCompatActivity {
             } catch (IOException ex) {
                 Toast.makeText(this, "Error creating file", Toast.LENGTH_SHORT).show();
             }
-            
+
             if (photoFile != null) {
                 Uri photoURI = FileProvider.getUriForFile(this,
                         getApplicationContext().getPackageName() + ".fileprovider",
@@ -202,17 +247,21 @@ public class DonateActivity extends AppCompatActivity {
             if (ivPreview != null) {
                 ivPreview.setVisibility(View.VISIBLE);
                 ivPreview.setImageURI(Uri.fromFile(new File(currentPhotoPath)));
-                findViewById(R.id.tvCameraEmoji).setVisibility(View.GONE);
-                findViewById(R.id.tvAddPhotos).setVisibility(View.GONE);
-                findViewById(R.id.tvUploadHint).setVisibility(View.GONE);
+                View tvCameraEmoji = findViewById(R.id.tvCameraEmoji);
+                View tvAddPhotos = findViewById(R.id.tvAddPhotos);
+                View tvUploadHint = findViewById(R.id.tvUploadHint);
+                if (tvCameraEmoji != null) tvCameraEmoji.setVisibility(View.GONE);
+                if (tvAddPhotos != null) tvAddPhotos.setVisibility(View.GONE);
+                if (tvUploadHint != null) tvUploadHint.setVisibility(View.GONE);
             }
             Toast.makeText(this, "Photo added!", Toast.LENGTH_SHORT).show();
         } else if (requestCode == MAP_PICKER_REQUEST_CODE && resultCode == RESULT_OK && data != null) {
             String address = data.getStringExtra("address");
             selectedLat = data.getDoubleExtra("latitude", 0);
             selectedLng = data.getDoubleExtra("longitude", 0);
-            etLocation.setText(address);
+            if (etLocation != null) {
+                etLocation.setText(address);
+            }
         }
-
     }
 }

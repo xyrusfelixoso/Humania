@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/signup"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/signup"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/bg_gradient_splash"
     android:fillViewport="true"
     android:scrollbars="none">
@@ -17,7 +17,6 @@
         android:paddingEnd="28dp"
         android:paddingBottom="40dp">
 
-        <!-- ── TOP LOGO AREA ── -->
         <!-- Header -->
         <LinearLayout
             android:layout_width="match_parent"
@@ -28,9 +27,6 @@
             android:paddingBottom="30dp">
 
             <!-- Logo Icon -->
-            android:paddingTop="60dp"
-            android:paddingBottom="32dp">
-
             <FrameLayout
                 android:layout_width="70dp"
                 android:layout_height="70dp"
@@ -38,21 +34,16 @@
                 android:layout_marginBottom="12dp">
 
                 <androidx.cardview.widget.CardView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:cardCornerRadius="22dp">
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                <androidx.cardview.widget.CardView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     app:cardCornerRadius="20dp">
+
                     <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/humanialogo" />
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/humanialogo"
+                        android:contentDescription="App Logo" />
                 </androidx.cardview.widget.CardView>
             </FrameLayout>
 
@@ -66,21 +57,9 @@
                 android:textStyle="bold"
                 android:fontFamily="serif"
                 android:letterSpacing="-0.02" />
-
         </LinearLayout>
 
-        <!-- ── SIGNUP CARD ── -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Create Account"
-                android:textColor="#FFFFFF"
-                android:textSize="28sp"
-                android:textStyle="bold"
-                android:fontFamily="serif" />
-        </LinearLayout>
-
-        <!-- Form Card -->
+        <!-- Signup Card -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -108,7 +87,7 @@
                 android:lineSpacingMultiplier="1.4"
                 android:layout_marginBottom="24dp" />
 
-            <!-- ── FULL NAME FIELD ── -->
+            <!-- FULL NAME -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -119,41 +98,22 @@
                 android:letterSpacing="0.08"
                 android:layout_marginBottom="6dp" />
 
-            <FrameLayout
+            <EditText
+                android:id="@+id/etName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp">
-
-                <EditText
-                    android:id="@+id/etName"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/bg_input"
-                    android:hint="John Doe"
-                    android:textColorHint="#BBBBBB"
-                    android:textColor="#1B4332"
-                    android:textSize="14sp"
-                    android:paddingStart="16dp"
-                    android:paddingEnd="16dp"
-                    android:paddingTop="14dp"
-                    android:paddingBottom="14dp"
-                    android:inputType="textPersonName"
-                    android:singleLine="true"
-                    android:imeOptions="actionNext" />
-            </FrameLayout>
-
-            <!-- ── EMAIL FIELD ── -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Join our community"
+                android:background="@drawable/bg_input"
+                android:hint="John Doe"
+                android:textColorHint="#BBBBBB"
                 android:textColor="#1B4332"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:fontFamily="serif"
-                android:layout_marginBottom="20dp" />
+                android:textSize="14sp"
+                android:padding="14dp"
+                android:inputType="textPersonName"
+                android:singleLine="true"
+                android:layout_marginBottom="16dp"
+                android:imeOptions="actionNext" />
 
-            <!-- Email -->
+            <!-- EMAIL ADDRESS -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -195,21 +155,7 @@
                     android:contentDescription="Email icon" />
             </FrameLayout>
 
-            <!-- ── PASSWORD FIELD ── -->
-                android:layout_marginBottom="6dp" />
-
-            <EditText
-                android:id="@+id/etSignUpEmail"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/bg_input"
-                android:hint="you@example.com"
-                android:textSize="14sp"
-                android:padding="14dp"
-                android:inputType="textEmailAddress"
-                android:layout_marginBottom="16dp" />
-
-            <!-- Password -->
+            <!-- PASSWORD -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -235,7 +181,7 @@
                     android:textColor="#1B4332"
                     android:textSize="14sp"
                     android:paddingStart="48dp"
-                    android:paddingEnd="48dp"
+                    android:paddingEnd="16dp"
                     android:paddingTop="14dp"
                     android:paddingBottom="14dp"
                     android:inputType="textPassword"
@@ -251,21 +197,7 @@
                     android:contentDescription="Password icon" />
             </FrameLayout>
 
-            <!-- ── CONFIRM PASSWORD FIELD ── -->
-                android:layout_marginBottom="6dp" />
-
-            <EditText
-                android:id="@+id/etSignUpPassword"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/bg_input"
-                android:hint="Create a password"
-                android:textSize="14sp"
-                android:padding="14dp"
-                android:inputType="textPassword"
-                android:layout_marginBottom="16dp" />
-
-            <!-- Confirm Password -->
+            <!-- CONFIRM PASSWORD -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -304,23 +236,10 @@
                     android:layout_gravity="center_vertical|start"
                     android:layout_marginStart="14dp"
                     android:src="@drawable/ic_lock"
-                    android:contentDescription="Password icon" />
+                    android:contentDescription="Confirm Password icon" />
             </FrameLayout>
 
-            <!-- ── SIGN UP BUTTON ── -->
-                android:layout_marginBottom="6dp" />
-
-            <EditText
-                android:id="@+id/etConfirmPassword"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/bg_input"
-                android:hint="Repeat password"
-                android:textSize="14sp"
-                android:padding="14dp"
-                android:inputType="textPassword"
-                android:layout_marginBottom="24dp" />
-
+            <!-- Signup Button -->
             <Button
                 android:id="@+id/btnSignUp"
                 android:layout_width="match_parent"
@@ -331,17 +250,7 @@
                 android:textStyle="bold"
                 android:background="@drawable/bg_button_primary"
                 android:paddingTop="16dp"
-                android:paddingBottom="16dp"
-                android:layout_marginBottom="10dp" />
-
-        </LinearLayout>
-
-        <!-- ── LOGIN LINK ── -->
-                android:text="Sign Up"
-                android:textColor="#FFFFFF"
-                android:textStyle="bold"
-                android:background="@drawable/bg_button_primary"
-                android:padding="16dp" />
+                android:paddingBottom="16dp" />
 
         </LinearLayout>
 
@@ -353,7 +262,6 @@
             android:gravity="center_vertical"
             android:layout_marginTop="24dp">
 
-            android:layout_marginTop="24dp">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -364,24 +272,8 @@
             <TextView
                 android:id="@+id/tvLogin"
                 android:layout_width="wrap_content"
-                android:layout_height="48dp"
-                android:text="Sign In"
-                android:textColor="#FFFFFF"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                android:layout_marginTop="15dp"
-                android:clickable="true"
-                android:focusable="true" />
-
-        </LinearLayout>
-
-    </LinearLayout>
-
-            <TextView
-                android:id="@+id/tvLogin"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Login"
+                android:text="Sign In"
                 android:textColor="#FFFFFF"
                 android:textSize="14sp"
                 android:textStyle="bold"

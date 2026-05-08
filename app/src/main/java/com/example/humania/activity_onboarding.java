@@ -1,13 +1,15 @@
 package com.example.humania;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Button;
+import android.widget.ImageButton;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-import androidx.core.view.WindowInsetsControllerCompat;
 
 public class activity_onboarding extends AppCompatActivity {
 
@@ -16,11 +18,51 @@ public class activity_onboarding extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_onboarding);
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.onboard), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
-
         });
+
+        // Initialize buttons
+        ImageButton btnBack = findViewById(R.id.btnBack);
+        Button btnDonate = findViewById(R.id.button3);
+        Button btnNeedHelp = findViewById(R.id.button5);
+        Button btnOrg = findViewById(R.id.button4);
+
+        // Back button
+        if (btnBack != null) {
+            btnBack.setOnClickListener(v -> finish());
+        }
+
+        // 1. I WANT TO DONATE -> Moadto sa DonateActivity
+        if (btnDonate != null) {
+            btnDonate.setOnClickListener(v -> {
+                Intent intent = new Intent(activity_onboarding.this, DonateActivity.class);
+                intent.putExtra("ROLE", "donor");
+                startActivity(intent);
+            });
+        }
+
+        // 2. I NEED HELP! -> Moadto sa HomeActivity (para makita ang mga pagkaon/items)
+        if (btnNeedHelp != null) {
+            btnNeedHelp.setOnClickListener(v -> {
+                Intent intent = new Intent(activity_onboarding.this, HomeActivity.class);
+                intent.putExtra("ROLE", "recipient");
+                startActivity(intent);
+                finish();
+            });
+        }
+
+        // 3. IM AN ORGANIZATION -> Moadto sa HomeActivity
+        if (btnOrg != null) {
+            btnOrg.setOnClickListener(v -> {
+                Intent intent = new Intent(activity_onboarding.this, HomeActivity.class);
+                intent.putExtra("ROLE", "organization");
+                startActivity(intent);
+                finish();
+            });
+        }
     }
 }

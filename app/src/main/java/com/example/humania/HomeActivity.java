@@ -7,7 +7,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -95,15 +94,6 @@ public class HomeActivity extends AppCompatActivity {
                     return true;
                 }
                 return false;
-            });
-        }
-
-        // FAB to Post Donation Screen
-        FloatingActionButton fab = findViewById(R.id.fab);
-        if (fab != null) {
-            fab.setOnClickListener(v -> {
-                Intent intent = new Intent(HomeActivity.this, DonateActivity.class);
-                startActivity(intent);
             });
         }
     }

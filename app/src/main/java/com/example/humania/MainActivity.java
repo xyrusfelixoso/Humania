@@ -4,10 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,26 +15,25 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 public class MainActivity extends AppCompatActivity {
 
     private Button btnLogin;
-    private EditText etEmail;
-    private EditText etPassword;
+    private EditText etEmail, etPassword;
     private ImageView ivTogglePassword;
     private boolean passwordVisible = false;
-
-
-    // Arrays for multiple users
-    private String[] emails = {"pasikat", "admin", "user"};
-    private String[] passwords = {"sijerry", "admin123", "user123"};
-
-
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_login);
+
+        // 1. Initialize Firebase Auth
+        mAuth = FirebaseAuth.getInstance();
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.login), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -62,57 +61,35 @@ public class MainActivity extends AppCompatActivity {
         // Login button click
         btnLogin.setOnClickListener(view -> checkLogin());
 
-
-        // OTHER BUTTONS FUNCTIONALITY
-        findViewById(R.id.tvForgotPassword).setOnClickListener(v -> 
-            Toast.makeText(this, "Password reset link sent to your email", Toast.LENGTH_SHORT).show());
-
-        findViewById(R.id.btnGoogle).setOnClickListener(v -> 
-            Toast.makeText(this, "Signing in with Google...", Toast.LENGTH_SHORT).show());
-
-        findViewById(R.id.btnFacebook).setOnClickListener(v -> 
-            Toast.makeText(this, "Signing in with Facebook...", Toast.LENGTH_SHORT).show());
-
         // Open Sign Up Screen
         findViewById(R.id.tvSignUp).setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, SignUpActivity.class);
             startActivity(intent);
         });
-
     }
 
     private void checkLogin() {
-        String inputEmail = etEmail.getText().toString().trim();
-        String inputPassword = etPassword.getText().toString().trim();
+        String email = etEmail.getText().toString().trim();
+        String password = etPassword.getText().toString().trim();
 
-
-        boolean valid = false;
-
-        // Loop through all stored accounts
-        for (int i = 0; i < emails.length; i++) {
-            if (inputEmail.equals(emails[i]) && inputPassword.equals(passwords[i])) {
-                valid = true;
-                break;
-            }
-        }
-
-        if (valid) {
-
-        if (inputEmail.isEmpty() || inputPassword.isEmpty()) {
-            Toast.makeText(this, "Please enter email and password", Toast.LENGTH_SHORT).show();
+        if (email.isEmpty() || password.isEmpty()) {
+            Toast.makeText(this, "Palihog butangi og email ug password", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        // Use UserManager to validate login
-        if (UserManager.validateUser(inputEmail, inputPassword)) {
-
-            Intent intent = new Intent(MainActivity.this, activity_getstarted.class);
-            startActivity(intent);
-        } else {
-            etEmail.setText("");
-            etPassword.setText("");
-            etEmail.setHint("Wrong email!");
-            etPassword.setHint("Wrong password!");
-        }
+        // 2. Firebase Login Logic
+        mAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, task -> {
+                    if (task.isSuccessful()) {
+                        Toast.makeText(MainActivity.this, "Login Successful!", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(MainActivity.this, activity_getstarted.class);
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        Toast.makeText(MainActivity.this, "Login Failed: " + 
+                                (task.getException() != null ? task.getException().getMessage() : "Check credentials"), 
+                                Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 }

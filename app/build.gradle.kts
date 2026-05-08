@@ -1,6 +1,6 @@
 plugins {
     alias(libs.plugins.android.application)
-    alias(libs.plugins.google.services)
+    alias(libs.plugins.google.services) // Mao ni ang plugin sa Step 2 sa picture
 }
 
 android {
@@ -33,15 +33,21 @@ android {
 }
 
 dependencies {
+    // Step 2: Import the Firebase BoM
     implementation(platform(libs.firebase.bom))
-    implementation(libs.firebase.database)
+    
+    // Step 2: Add Firebase Analytics and other products
+    // Note: Wala na'y version diri kay BoM na ang nag-handle
+    implementation(libs.firebase.analytics)
     implementation(libs.firebase.auth)
+    implementation(libs.firebase.database)
 
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)
     implementation(libs.constraintlayout)
     implementation(libs.play.services.maps)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)

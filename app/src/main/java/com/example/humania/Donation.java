@@ -15,14 +15,10 @@ public class Donation implements Serializable {
     private String timestamp;
     private String userId;
 
-
     // No-argument constructor for Firebase
     public Donation() {}
 
-    public Donation(String title, String description, String quantity, String expiryDate, String location, String category, String photoPath, String timestamp, String userId) {
-
-    public Donation(String title, String description, String quantity, String expiryDate, String location, double latitude, double longitude, String category, String photoPath, String timestamp) {
-
+    public Donation(String title, String description, String quantity, String expiryDate, String location, double latitude, double longitude, String category, String photoPath, String timestamp, String userId) {
         this.title = title;
         this.description = description;
         this.quantity = quantity;
@@ -36,15 +32,37 @@ public class Donation implements Serializable {
         this.userId = userId;
     }
 
+    // Getters and Setters
     public String getTitle() { return title; }
+    public void setTitle(String title) { this.title = title; }
+
     public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
+
     public String getQuantity() { return quantity; }
+    public void setQuantity(String quantity) { this.quantity = quantity; }
+
     public String getExpiryDate() { return expiryDate; }
+    public void setExpiryDate(String expiryDate) { this.expiryDate = expiryDate; }
+
     public String getLocation() { return location; }
+    public void setLocation(String location) { this.location = location; }
+
     public double getLatitude() { return latitude; }
+    public void setLatitude(double latitude) { this.latitude = latitude; }
+
     public double getLongitude() { return longitude; }
+    public void setLongitude(double longitude) { this.longitude = longitude; }
+
     public String getCategory() { return category; }
+    public void setCategory(String category) { this.category = category; }
+
     public String getPhotoPath() { return photoPath; }
+    public void setPhotoPath(String photoPath) { this.photoPath = photoPath; }
+
     public String getTimestamp() { return timestamp; }
+    public void setTimestamp(String timestamp) { this.timestamp = timestamp; }
+
     public String getUserId() { return userId; }
+    public void setUserId(String userId) { this.userId = userId; }
 }
