@@ -36,29 +36,28 @@ public class activity_onboarding extends AppCompatActivity {
             btnBack.setOnClickListener(v -> finish());
         }
 
-        // 1. I WANT TO DONATE -> Moadto sa DonateActivity
+        // Redirect all choices to DashboardActivity
         if (btnDonate != null) {
             btnDonate.setOnClickListener(v -> {
-                Intent intent = new Intent(activity_onboarding.this, DonateActivity.class);
+                Intent intent = new Intent(activity_onboarding.this, DashboardActivity.class);
                 intent.putExtra("ROLE", "donor");
                 startActivity(intent);
+                finish();
             });
         }
 
-        // 2. I NEED HELP! -> Moadto sa HomeActivity (para makita ang mga pagkaon/items)
         if (btnNeedHelp != null) {
             btnNeedHelp.setOnClickListener(v -> {
-                Intent intent = new Intent(activity_onboarding.this, HomeActivity.class);
+                Intent intent = new Intent(activity_onboarding.this, DashboardActivity.class);
                 intent.putExtra("ROLE", "recipient");
                 startActivity(intent);
                 finish();
             });
         }
 
-        // 3. IM AN ORGANIZATION -> Moadto sa HomeActivity
         if (btnOrg != null) {
             btnOrg.setOnClickListener(v -> {
-                Intent intent = new Intent(activity_onboarding.this, HomeActivity.class);
+                Intent intent = new Intent(activity_onboarding.this, DashboardActivity.class);
                 intent.putExtra("ROLE", "organization");
                 startActivity(intent);
                 finish();

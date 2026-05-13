@@ -76,8 +76,8 @@ public class MainActivity extends AppCompatActivity {
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
                         Toast.makeText(MainActivity.this, "Login Successful!", Toast.LENGTH_SHORT).show();
-                        // Direct flow: Splash -> Login -> Dashboard
-                        Intent intent = new Intent(MainActivity.this, DashboardActivity.class);
+                        // Flow: Login -> Onboard
+                        Intent intent = new Intent(MainActivity.this, activity_onboarding.class);
                         startActivity(intent);
                         finish();
                     } else {

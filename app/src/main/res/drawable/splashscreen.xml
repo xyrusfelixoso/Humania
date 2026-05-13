@@ -4,7 +4,9 @@
 
 
     <item android:drawable="@drawable/img"
-        android:gravity="center"/>
+        android:gravity="center"
+        android:height="100dp"
+        android:width="100dp"/>
 
     <!--    <item>-->
     <!--        <bitmap android:src="@drawable/FacebookLogo" android:gravity="center"/>-->
