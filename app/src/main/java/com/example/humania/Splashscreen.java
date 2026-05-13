@@ -11,16 +11,15 @@ public class Splashscreen extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // I-set ang splash layout kung naa
         setContentView(R.layout.splashscreen); 
         
         new Handler().postDelayed(() -> {
             FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
             if (currentUser != null) {
-                // Kung naka-login na, diretso sa Get Started o Home
-                startActivity(new Intent(Splashscreen.this, activity_getstarted.class));
+                // Redirect directly to DashboardActivity if logged in
+                startActivity(new Intent(Splashscreen.this, DashboardActivity.class));
             } else {
-                // Kung wala pa, adto sa Login (MainActivity)
+                // Otherwise go to Login (MainActivity)
                 startActivity(new Intent(Splashscreen.this, MainActivity.class));
             }
             finish();

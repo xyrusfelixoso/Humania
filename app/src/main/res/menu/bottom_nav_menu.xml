@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- res/menu/bottom_nav_menu.xml -->
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
@@ -11,6 +10,12 @@
         android:id="@+id/nav_browse"
         android:icon="@drawable/ic_search"
         android:title="Browse" />
+
+    <!-- Placeholder for FAB -->
+    <item
+        android:id="@+id/nav_placeholder"
+        android:title=""
+        android:enabled="false" />
 
     <item
         android:id="@+id/nav_messages"
