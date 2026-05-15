@@ -2,6 +2,7 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background">
@@ -21,7 +22,6 @@
             android:paddingStart="24dp"
             android:paddingEnd="24dp">
 
-            <!-- Side Nav Toggle Button -->
             <ImageView
                 android:id="@+id/btnOpenDrawer"
                 android:layout_width="40dp"
@@ -40,7 +40,6 @@
                 android:gravity="center_horizontal"
                 android:layout_marginTop="32dp">
 
-                <!-- Avatar -->
                 <FrameLayout
                     android:layout_width="80dp"
                     android:layout_height="80dp"
@@ -58,7 +57,7 @@
                     android:id="@+id/tvProfileName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Maria Santos"
+                    android:text="User Name"
                     android:textColor="@color/white"
                     android:textSize="22sp"
                     android:textStyle="bold" />
@@ -67,13 +66,12 @@
                     android:id="@+id/tvProfileHandle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@mariasantos · ✅ Verified"
+                    android:text="@username · ✅ Verified"
                     android:textColor="@color/white_60"
                     android:textSize="13sp"
                     android:layout_marginTop="2dp"
                     android:layout_marginBottom="20dp" />
 
-                <!-- Stats Row -->
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -89,7 +87,7 @@
                             android:id="@+id/tvStatDonated"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="12"
+                            android:text="0"
                             android:textColor="@color/white"
                             android:textSize="22sp"
                             android:textStyle="bold" />
@@ -145,8 +143,7 @@
             </LinearLayout>
         </RelativeLayout>
 
-        <!-- SCROLLABLE BODY -->
-        <ScrollView
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scrollbars="none"
@@ -166,7 +163,7 @@
                     android:gravity="center_vertical"
                     android:background="@drawable/bg_impact_card"
                     android:padding="20dp"
-                    android:layout_marginBottom="20dp">
+                    android:layout_marginBottom="24dp">
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -194,6 +191,48 @@
                     </LinearLayout>
                 </LinearLayout>
 
+                <!-- My Donations Section (Dynamically shown) -->
+                <LinearLayout
+                    android:id="@+id/sectionMyDonations"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginBottom="24dp"
+                    android:visibility="gone">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="12dp">
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="My Donations"
+                            android:textColor="@color/text_primary"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+                        <TextView
+                            android:id="@+id/tvSeeAllDonations"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="See All"
+                            android:textColor="@color/green_medium"
+                            android:textSize="12sp"
+                            android:textStyle="bold"
+                            android:padding="4dp" />
+                    </LinearLayout>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvMyDonationsProfile"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:nestedScrollingEnabled="false"
+                        tools:listitem="@layout/item_donation_card" />
+                </LinearLayout>
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -204,12 +243,6 @@
                     android:layout_marginBottom="12dp" />
 
                 <!-- Menu Items -->
-                <include layout="@layout/item_menu_row"
-                    android:id="@+id/menuDonations"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp" />
-
                 <include layout="@layout/item_menu_row"
                     android:id="@+id/menuRequests"
                     android:layout_width="match_parent"
@@ -235,10 +268,10 @@
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="100dp" /> <!-- Spacer for FAB -->
+                    android:layout_height="100dp" />
 
             </LinearLayout>
-        </ScrollView>
+        </androidx.core.widget.NestedScrollView>
     </LinearLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

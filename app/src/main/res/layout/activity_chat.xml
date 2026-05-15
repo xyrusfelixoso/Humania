@@ -36,6 +36,7 @@
             android:layout_marginStart="8dp"
             android:background="@drawable/bg_avatar_green">
             <TextView
+                android:id="@+id/tvChatAvatarEmoji"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -53,11 +54,12 @@
                 android:id="@+id/tvChatName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Donor Name"
+                android:text="User Name"
                 android:textColor="@color/text_primary"
                 android:textSize="16sp"
                 android:textStyle="bold" />
             <TextView
+                android:id="@+id/tvChatStatus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Online"
@@ -68,6 +70,7 @@
 
     <!-- Messages Area -->
     <ScrollView
+        android:id="@+id/svChat"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
@@ -77,29 +80,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-
-            <!-- Mock Incoming Message -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/bg_chip"
-                android:padding="12dp"
-                android:text="Hello! Is the donation still available?"
-                android:textColor="@color/text_primary"
-                android:layout_marginBottom="8dp"
-                android:layout_gravity="start" />
-
-            <!-- Mock Outgoing Message -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/bg_chip_active"
-                android:padding="12dp"
-                android:text="Yes, it is! When can you pick it up?"
-                android:textColor="@color/white"
-                android:layout_marginBottom="8dp"
-                android:layout_gravity="end" />
-
+            <!-- Messages will be added here dynamically -->
         </LinearLayout>
     </ScrollView>
 

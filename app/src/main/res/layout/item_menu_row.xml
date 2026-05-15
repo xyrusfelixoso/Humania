@@ -2,6 +2,7 @@
 <!-- item_menu_row.xml -->
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
@@ -17,10 +18,10 @@
         android:id="@+id/tvMenuIcon"
         android:layout_width="36dp"
         android:layout_height="wrap_content"
-        android:text="📦"
         android:textSize="22sp"
         android:gravity="center"
-        android:layout_marginEnd="14dp" />
+        android:layout_marginEnd="14dp"
+        tools:text="📦" />
 
     <!-- Text -->
     <LinearLayout
@@ -33,18 +34,18 @@
             android:id="@+id/tvMenuTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="My Donations"
             android:textColor="@color/text_primary"
             android:textSize="14sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            tools:text="My Donations" />
 
         <TextView
             android:id="@+id/tvMenuSubtitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="12 items posted"
             android:textColor="@color/text_muted"
-            android:textSize="12sp" />
+            android:textSize="12sp"
+            tools:text="0 items posted" />
 
     </LinearLayout>
 

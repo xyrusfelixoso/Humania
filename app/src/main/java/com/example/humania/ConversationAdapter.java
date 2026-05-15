@@ -1,5 +1,6 @@
 package com.example.humania;
 
+import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,13 +53,26 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
         }
 
         public void bind(Conversation conversation, OnItemClickListener listener) {
-            tvName.setText(conversation.getOtherUserName() != null ? conversation.getOtherUserName() : "User");
+            String name = conversation.getOtherUserName() != null ? conversation.getOtherUserName() : "User";
+            tvName.setText(name);
             tvLastMessage.setText(conversation.getLastMessage());
             
-            // Basic formatting for timestamp or just show "Just now"
-            tvTime.setText("Now"); 
+            if (conversation.getTimestamp() > 0) {
+                tvTime.setText(DateFormat.format("h:mm a", conversation.getTimestamp()));
+            } else {
+                tvTime.setText("");
+            }
+
+            // Set a distinct emoji based on the name hash
+            tvAvatarEmoji.setText(getEmojiForName(name));
             
             itemView.setOnClickListener(v -> listener.onItemClick(conversation));
+        }
+
+        private String getEmojiForName(String name) {
+            String[] emojis = {"😊", "😎", "🦊", "🐻", "🐱", "🐶", "🐼", "🐨", "🦁", "🐯"};
+            int index = Math.abs(name.hashCode()) % emojis.length;
+            return emojis[index];
         }
     }
 }

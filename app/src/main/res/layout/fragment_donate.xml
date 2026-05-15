@@ -200,6 +200,24 @@
 
             </LinearLayout>
 
+            <!-- Full Name Field -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="YOUR FULL NAME"
+                android:textColor="@color/text_secondary"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:letterSpacing="0.05"
+                android:layout_marginBottom="6dp" />
+
+            <EditText
+                android:id="@+id/etDonorName"
+                style="@style/Widget.Humania.Input"
+                android:hint="e.g. Juan Dela Cruz"
+                android:inputType="textPersonName"
+                android:layout_marginBottom="16dp" />
+
             <!-- Title Field -->
             <TextView
                 android:layout_width="wrap_content"

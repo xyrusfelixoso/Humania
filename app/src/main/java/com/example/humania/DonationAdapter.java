@@ -1,12 +1,16 @@
 package com.example.humania;
 
+import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import com.bumptech.glide.Glide;
 import java.util.List;
 
 public class DonationAdapter extends RecyclerView.Adapter<DonationAdapter.DonationViewHolder> {
@@ -42,34 +46,62 @@ public class DonationAdapter extends RecyclerView.Adapter<DonationAdapter.Donati
     }
 
     static class DonationViewHolder extends RecyclerView.ViewHolder {
-        TextView tvTitle, tvMeta, tvTagCategory, tvTagUrgency, tvDistance, tvEmoji;
+        TextView tvTitle, tvDescription, tvMeta, tvTagCategory, tvDistance, tvEmoji, tvDonor;
         ImageView ivImage;
+        ImageButton btnMessage;
 
         public DonationViewHolder(@NonNull View itemView) {
             super(itemView);
             tvTitle = itemView.findViewById(R.id.tvDonationTitle);
+            tvDescription = itemView.findViewById(R.id.tvDonationDescription);
             tvMeta = itemView.findViewById(R.id.tvDonationMeta);
             tvTagCategory = itemView.findViewById(R.id.tvTagCategory);
-            tvTagUrgency = itemView.findViewById(R.id.tvTagUrgency);
             tvDistance = itemView.findViewById(R.id.tvDistance);
             tvEmoji = itemView.findViewById(R.id.tvDonationEmoji);
+            tvDonor = itemView.findViewById(R.id.tvDonationDonor);
             ivImage = itemView.findViewById(R.id.ivDonationImage);
+            btnMessage = itemView.findViewById(R.id.btnMessageDonor);
         }
 
         public void bind(Donation donation, OnItemClickListener listener) {
+            Context context = itemView.getContext();
             tvTitle.setText(donation.getTitle());
+            tvDescription.setText(donation.getDescription());
             tvMeta.setText("Posted: " + (donation.getTimestamp() != null ? donation.getTimestamp() : "Just now"));
             tvTagCategory.setText(donation.getCategory());
-            tvTagUrgency.setText("Expires: " + donation.getExpiryDate());
             tvDistance.setText(donation.getLocation());
+            tvDonor.setText("By: " + (donation.getDonorName() != null ? donation.getDonorName() : "Anonymous"));
 
-            // Simple emoji mapping based on category
-            if (donation.getCategory() != null) {
-                if (donation.getCategory().contains("Food")) tvEmoji.setText("🥦");
-                else if (donation.getCategory().contains("Clothes")) tvEmoji.setText("👕");
-                else if (donation.getCategory().contains("Toys")) tvEmoji.setText("🧸");
-                else tvEmoji.setText("🎁");
+            // Load Image with Glide
+            if (donation.getPhotoPath() != null && !donation.getPhotoPath().isEmpty()) {
+                ivImage.setVisibility(View.VISIBLE);
+                tvEmoji.setVisibility(View.GONE);
+                Glide.with(context)
+                        .load(donation.getPhotoPath())
+                        .placeholder(R.drawable.bg_gradient_card_image)
+                        .into(ivImage);
+            } else {
+                ivImage.setVisibility(View.GONE);
+                tvEmoji.setVisibility(View.VISIBLE);
+                // Simple emoji mapping based on category
+                if (donation.getCategory() != null) {
+                    String cat = donation.getCategory().toLowerCase();
+                    if (cat.contains("food")) tvEmoji.setText("🥦");
+                    else if (cat.contains("clothes")) tvEmoji.setText("👕");
+                    else if (cat.contains("toys")) tvEmoji.setText("🧸");
+                    else if (cat.contains("items")) tvEmoji.setText("📦");
+                    else tvEmoji.setText("🎁");
+                }
             }
+
+            btnMessage.setOnClickListener(v -> {
+                if (donation.getUserId() != null) {
+                    Intent intent = new Intent(context, ChatActivity.class);
+                    intent.putExtra("otherUserId", donation.getUserId());
+                    intent.putExtra("donorName", donation.getDonorName());
+                    context.startActivity(intent);
+                }
+            });
 
             itemView.setOnClickListener(v -> listener.onItemClick(donation));
         }

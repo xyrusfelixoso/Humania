@@ -4,16 +4,53 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import java.util.ArrayList;
+import java.util.List;
 
 public class HomeActivity extends AppCompatActivity {
+
+    private TextView tvUserName, tvHomeStatDonated, tvGlobalTotalDonations;
+    private DatabaseReference mDatabase;
+    private FirebaseAuth mAuth;
+    private RecyclerView rvNearYou;
+    private DonationAdapter donationAdapter;
+    private List<Donation> donationList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_home);
+
+        mAuth = FirebaseAuth.getInstance();
+        String databaseUrl = "https://humania-942a7-default-rtdb.asia-southeast1.firebasedatabase.app/";
+        mDatabase = FirebaseDatabase.getInstance(databaseUrl).getReference();
+
+        tvUserName = findViewById(R.id.tvUserName);
+        tvHomeStatDonated = findViewById(R.id.tvHomeStatDonated);
+        tvGlobalTotalDonations = findViewById(R.id.tvGlobalTotalDonations);
+
+        // RecyclerView Setup
+        rvNearYou = findViewById(R.id.rvNearYou);
+        donationList = new ArrayList<>();
+        donationAdapter = new DonationAdapter(donationList, donation -> {
+            Intent intent = new Intent(HomeActivity.this, DetailActivity.class);
+            intent.putExtra("donation", donation);
+            startActivity(intent);
+        });
+        rvNearYou.setLayoutManager(new LinearLayoutManager(this));
+        rvNearYou.setAdapter(donationAdapter);
 
         // Avatar (Yellow Emoji) -> Profile Screen
         View ivProfileAvatar = findViewById(R.id.ivProfileAvatar);
@@ -30,7 +67,7 @@ public class HomeActivity extends AppCompatActivity {
         if (tvSeeAll != null) {
             tvSeeAll.setOnClickListener(v -> {
                 Intent intent = new Intent(HomeActivity.this, BrowseActivity.class);
-                intent.putExtra("category", "All Donations");
+                intent.putExtra("category", "All");
                 intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 startActivity(intent);
             });
@@ -42,30 +79,65 @@ public class HomeActivity extends AppCompatActivity {
         // Category Chips Setup
         setupChips();
         
-        // Donation Cards Setup
-        setupCards();
-        
-        // Update stats
-        updateStats();
+        // Load real-time data
+        loadUserData();
+        loadDonationsData();
+    }
+
+    private void loadUserData() {
+        FirebaseUser firebaseUser = mAuth.getCurrentUser();
+        if (firebaseUser != null) {
+            String userId = firebaseUser.getUid();
+            mDatabase.child("users").child(userId).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    User user = snapshot.getValue(User.class);
+                    if (user != null) {
+                        if (tvUserName != null) tvUserName.setText(user.fullName);
+                        if (tvHomeStatDonated != null) tvHomeStatDonated.setText(String.valueOf(user.totalDonations));
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                }
+            });
+        }
+    }
+
+    private void loadDonationsData() {
+        // Load all donations for "Near You" (simplified for now)
+        mDatabase.child("donations").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                donationList.clear();
+                long totalGlobalCount = 0;
+                for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+                    Donation donation = postSnapshot.getValue(Donation.class);
+                    if (donation != null) {
+                        donationList.add(0, donation); // Add to top (newest first)
+                        totalGlobalCount++;
+                    }
+                }
+                donationAdapter.notifyDataSetChanged();
+                if (tvGlobalTotalDonations != null) {
+                    tvGlobalTotalDonations.setText(String.valueOf(totalGlobalCount));
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        updateStats();
-        
         // Sync bottom nav selection
         BottomNavigationView bottomNav = findViewById(R.id.bottomNavigationView);
         if (bottomNav != null) {
             bottomNav.setSelectedItemId(R.id.nav_home);
-        }
-    }
-
-    private void updateStats() {
-        int count = DonationManager.getDonationCount();
-        TextView tvStatDonated = findViewById(R.id.tvHomeStatDonated);
-        if (tvStatDonated != null) {
-            tvStatDonated.setText(String.valueOf(count));
         }
     }
 
@@ -110,24 +182,6 @@ public class HomeActivity extends AppCompatActivity {
         Intent intent = new Intent(HomeActivity.this, BrowseActivity.class);
         intent.putExtra("category", category);
         intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-        startActivity(intent);
-    }
-
-    private void setupCards() {
-        if (findViewById(R.id.card1) != null) {
-            findViewById(R.id.card1).setOnClickListener(v -> openDetail("Fresh Vegetables Bundle"));
-        }
-        if (findViewById(R.id.card2) != null) {
-            findViewById(R.id.card2).setOnClickListener(v -> openDetail("Warm Clothes for Kids"));
-        }
-        if (findViewById(R.id.card3) != null) {
-            findViewById(R.id.card3).setOnClickListener(v -> openDetail("Educational Toys Set"));
-        }
-    }
-
-    private void openDetail(String title) {
-        Intent intent = new Intent(HomeActivity.this, DetailActivity.class);
-        intent.putExtra("title", title);
         startActivity(intent);
     }
 }

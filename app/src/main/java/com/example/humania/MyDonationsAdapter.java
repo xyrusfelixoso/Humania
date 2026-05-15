@@ -30,7 +30,8 @@ public class MyDonationsAdapter extends RecyclerView.Adapter<MyDonationsAdapter.
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Donation donation = donations.get(position);
         holder.tvTitle.setText(donation.getTitle());
-        holder.tvMeta.setText("Posted on " + donation.getTimestamp());
+        holder.tvDescription.setText(donation.getDescription());
+        holder.tvMeta.setText("By " + donation.getDonorName() + " • " + donation.getTimestamp());
         holder.tvCategory.setText(getEmojiForCategory(donation.getCategory()) + " " + donation.getCategory());
         
         // Handle Photo display
@@ -72,12 +73,13 @@ public class MyDonationsAdapter extends RecyclerView.Adapter<MyDonationsAdapter.
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvTitle, tvMeta, tvCategory, tvUrgency, tvDistance, tvEmoji;
+        TextView tvTitle, tvDescription, tvMeta, tvCategory, tvUrgency, tvDistance, tvEmoji;
         ImageView ivDonationImage;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             tvTitle = itemView.findViewById(R.id.tvDonationTitle);
+            tvDescription = itemView.findViewById(R.id.tvDonationDescription);
             tvMeta = itemView.findViewById(R.id.tvDonationMeta);
             tvCategory = itemView.findViewById(R.id.tvTagCategory);
             tvUrgency = itemView.findViewById(R.id.tvTagUrgency);

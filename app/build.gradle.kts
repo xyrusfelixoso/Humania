@@ -1,6 +1,6 @@
 plugins {
     alias(libs.plugins.android.application)
-    alias(libs.plugins.google.services) // Mao ni ang plugin sa Step 2 sa picture
+    alias(libs.plugins.google.services)
 }
 
 android {
@@ -33,14 +33,15 @@ android {
 }
 
 dependencies {
-    // Step 2: Import the Firebase BoM
     implementation(platform(libs.firebase.bom))
     
-    // Step 2: Add Firebase Analytics and other products
-    // Note: Wala na'y version diri kay BoM na ang nag-handle
     implementation(libs.firebase.analytics)
     implementation(libs.firebase.auth)
     implementation(libs.firebase.database)
+    implementation(libs.firebase.storage)
+
+    implementation(libs.glide)
+    annotationProcessor(libs.glide) // Note: Glide usually needs an annotation processor for Java
 
     implementation(libs.appcompat)
     implementation(libs.material)

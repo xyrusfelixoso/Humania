@@ -24,7 +24,15 @@
                 android:layout_height="260dp"
                 android:background="@drawable/bg_gradient_detail_hero">
 
-                <!-- Item Emoji (replace with ImageView + Glide in production) -->
+                <!-- Item Image -->
+                <ImageView
+                    android:id="@+id/ivDetailImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:visibility="gone" />
+
+                <!-- Item Emoji (fallback when image is not available) -->
                 <TextView
                     android:id="@+id/tvDetailEmoji"
                     android:layout_width="wrap_content"

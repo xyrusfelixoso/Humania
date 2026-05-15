@@ -24,6 +24,12 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -42,7 +48,7 @@ public class DonateActivity extends AppCompatActivity {
     private String currentPhotoPath;
     
     private TextView catFood, catClothes, catItems, catToys;
-    private EditText etTitle, etDescription, etQuantity, etExpiry, etLocation;
+    private EditText etTitle, etDescription, etQuantity, etExpiry, etLocation, etDonorName;
     private Button btnPostDonation;
     private String selectedCategory = "Food"; // Default
     private double selectedLat = 0, selectedLng = 0;
@@ -54,6 +60,29 @@ public class DonateActivity extends AppCompatActivity {
 
         initViews();
         setupListeners();
+        fetchCurrentUserName();
+    }
+
+    private void fetchCurrentUserName() {
+        String uid = FirebaseAuth.getInstance().getUid();
+        if (uid != null) {
+            String databaseUrl = "https://humania-942a7-default-rtdb.asia-southeast1.firebasedatabase.app/";
+            FirebaseDatabase.getInstance(databaseUrl).getReference("users").child(uid).child("fullName")
+                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if (snapshot.exists()) {
+                        String fullName = snapshot.getValue(String.class);
+                        if (etDonorName != null && fullName != null) {
+                            etDonorName.setText(fullName);
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {}
+            });
+        }
     }
 
     private void initViews() {
@@ -65,6 +94,7 @@ public class DonateActivity extends AppCompatActivity {
         catItems = findViewById(R.id.catItems);
         catToys = findViewById(R.id.catToys);
         
+        etDonorName = findViewById(R.id.etDonorName);
         etTitle = findViewById(R.id.etTitle);
         etDescription = findViewById(R.id.etDescription);
         etQuantity = findViewById(R.id.etQuantity);
@@ -121,25 +151,25 @@ public class DonateActivity extends AppCompatActivity {
         // Reset all categories to default style
         if (catFood != null) {
             catFood.setBackgroundResource(R.drawable.bg_chip);
-            catFood.setTextColor(getResources().getColor(R.color.text_secondary));
+            catFood.setTextColor(ContextCompat.getColor(this, R.color.text_secondary));
         }
         if (catClothes != null) {
             catClothes.setBackgroundResource(R.drawable.bg_chip);
-            catClothes.setTextColor(getResources().getColor(R.color.text_secondary));
+            catClothes.setTextColor(ContextCompat.getColor(this, R.color.text_secondary));
         }
         if (catItems != null) {
             catItems.setBackgroundResource(R.drawable.bg_chip);
-            catItems.setTextColor(getResources().getColor(R.color.text_secondary));
+            catItems.setTextColor(ContextCompat.getColor(this, R.color.text_secondary));
         }
         if (catToys != null) {
             catToys.setBackgroundResource(R.drawable.bg_chip);
-            catToys.setTextColor(getResources().getColor(R.color.text_secondary));
+            catToys.setTextColor(ContextCompat.getColor(this, R.color.text_secondary));
         }
 
         // Apply active style to selected
         if (selectedView != null) {
             selectedView.setBackgroundResource(R.drawable.bg_chip_active);
-            selectedView.setTextColor(getResources().getColor(R.color.white));
+            selectedView.setTextColor(ContextCompat.getColor(this, R.color.white));
         }
     }
 
@@ -158,37 +188,41 @@ public class DonateActivity extends AppCompatActivity {
     }
 
     private void handlePostDonation() {
+        String donorName = etDonorName.getText().toString().trim();
         String title = etTitle.getText().toString().trim();
         String desc = etDescription.getText().toString().trim();
         String qty = etQuantity.getText().toString().trim();
         String expiry = etExpiry.getText().toString().trim();
         String loc = etLocation.getText().toString().trim();
 
-        if (title.isEmpty() || desc.isEmpty() || qty.isEmpty() || loc.isEmpty()) {
+        if (donorName.isEmpty() || title.isEmpty() || desc.isEmpty() || qty.isEmpty() || loc.isEmpty()) {
             Toast.makeText(this, "Please fill in all required fields", Toast.LENGTH_SHORT).show();
             return;
         }
 
         // Create donation object
         String timestamp = new SimpleDateFormat("MMM dd, yyyy HH:mm", Locale.getDefault()).format(new Date());
-        String userId = UserManager.getCurrentUser();
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         
-        // Donation constructor has 11 parameters
-        Donation newDonation = new Donation(title, desc, qty, expiry, loc, selectedLat, selectedLng, selectedCategory, currentPhotoPath, timestamp, userId);
+        Donation newDonation = new Donation(title, desc, qty, expiry, loc, selectedLat, selectedLng, selectedCategory, currentPhotoPath, timestamp, userId, donorName);
         
-        // Save donation
-        DonationManager.addDonation(newDonation);
-
-        String message = "Success! Your donation of '" + title + "' has been posted.";
-        
-        new AlertDialog.Builder(this)
-                .setTitle("Donation Posted")
-                .setMessage(message)
-                .setPositiveButton("OK", (dialog, which) -> {
-                    setResult(RESULT_OK);
-                    finish();
-                })
-                .show();
+        // Save donation to Firebase via DonationManager
+        btnPostDonation.setEnabled(false);
+        DonationManager.addDonation(newDonation, (success, message) -> {
+            btnPostDonation.setEnabled(true);
+            if (success) {
+                new AlertDialog.Builder(this)
+                        .setTitle("Donation Posted")
+                        .setMessage("Success! Your donation of '" + title + "' has been posted.")
+                        .setPositiveButton("OK", (dialog, which) -> {
+                            setResult(RESULT_OK);
+                            finish();
+                        })
+                        .show();
+            } else {
+                Toast.makeText(this, "Failed to post donation: " + message, Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     private boolean checkCameraPermission() {

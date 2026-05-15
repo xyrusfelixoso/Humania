@@ -14,11 +14,12 @@ public class Donation implements Serializable {
     private String photoPath;
     private String timestamp;
     private String userId;
+    private String donorName;
 
     // No-argument constructor for Firebase
     public Donation() {}
 
-    public Donation(String title, String description, String quantity, String expiryDate, String location, double latitude, double longitude, String category, String photoPath, String timestamp, String userId) {
+    public Donation(String title, String description, String quantity, String expiryDate, String location, double latitude, double longitude, String category, String photoPath, String timestamp, String userId, String donorName) {
         this.title = title;
         this.description = description;
         this.quantity = quantity;
@@ -30,6 +31,7 @@ public class Donation implements Serializable {
         this.photoPath = photoPath;
         this.timestamp = timestamp;
         this.userId = userId;
+        this.donorName = donorName;
     }
 
     // Getters and Setters
@@ -65,4 +67,7 @@ public class Donation implements Serializable {
 
     public String getUserId() { return userId; }
     public void setUserId(String userId) { this.userId = userId; }
+
+    public String getDonorName() { return donorName; }
+    public void setDonorName(String donorName) { this.donorName = donorName; }
 }

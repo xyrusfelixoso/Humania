@@ -2,6 +2,7 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background">
@@ -89,7 +90,7 @@
                                 android:letterSpacing="0.05" />
                         </LinearLayout>
 
-                        <!-- Stat: Families -->
+                        <!-- Stat: Total (Global) -->
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -102,9 +103,10 @@
                             android:layout_marginEnd="10dp">
 
                             <TextView
+                                android:id="@+id/tvGlobalTotalDonations"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="48"
+                                android:text="0"
                                 android:textColor="@color/white"
                                 android:textSize="18sp"
                                 android:textStyle="bold" />
@@ -112,7 +114,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@string/stat_helped"
+                                android:text="TOTAL"
                                 android:textColor="@color/white_60"
                                 android:textSize="11sp"
                                 android:letterSpacing="0.05" />
@@ -303,30 +305,13 @@
                         android:textStyle="bold" />
                 </LinearLayout>
 
-                <!-- Donation Cards -->
-                <!-- Card 1 -->
-                <include
-                    android:id="@+id/card1"
-                    layout="@layout/item_donation_card"
+                <!-- Donation List -->
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvNearYou"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="14dp" />
-
-                <!-- Card 2 -->
-                <include
-                    android:id="@+id/card2"
-                    layout="@layout/item_donation_card"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="14dp" />
-
-                <!-- Card 3 -->
-                <include
-                    android:id="@+id/card3"
-                    layout="@layout/item_donation_card"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="14dp" />
+                    android:nestedScrollingEnabled="false"
+                    tools:listitem="@layout/item_donation_card" />
 
                 <!-- Space for FAB overlap -->
                 <View
